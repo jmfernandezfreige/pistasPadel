@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Registro | Arena Padel Club</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+  <!-- CABECERA -->
+  <header class="cabecera">
+    <div class="contenedor estructura-cabecera">
+
+      <!-- Logo esquina izquierda, pinchar te lleva al inicio -->
+      <div class="logotipo-cabecera">
+        <a href="index.html">
+          <img src="img/logo_arena_padel_club.png" alt="Arena Padel Club">
+        </a>
+      </div>
+
+      <!-- Menú -->
+      <nav class="navegacion-inicio">
+        <a href="index.html#inicio">Inicio</a>
+        <a href="index.html#blog">Blog</a>
+        <a href="index.html#instalaciones">Instalaciones</a>
+        <a href="pistas.html">Pistas</a>
+        <a href="index.html#contacto">Contacto</a>
+      </nav>
+
+      <!-- Registro/Login -->
+      <div class="registro-login">
+        <a href="registro.html" class="btn btn-claro">Registrarse</a>
+        <a href="login.html" class="btn btn-relleno">Iniciar sesión</a>
+      </div>
+
+    </div>
+  </header>
+
+  <main>
+
+    <!-- SECCIÓN REGISTRO -->
+    <section class="seccion-registro">
+      <div class="contenedor">
+
+        <!-- Texto -->
+        <div class="login-texto">
+          <p class="definicion">Únete al club</p>
+          <h1>Crea tu cuenta</h1>
+          <p class="descripcion-login">
+            Regístrate para reservar pistas, consultar disponibilidad y formar parte del club.
+          </p>
+        </div>
+
+        <!-- Formulario -->
+        <div class="caja">
+          <form class="formulario-login" action="#" method="post">
+
+            <!-- Nombre -->
+            <div class="grupo-formulario">
+              <label for="nombre">Nombre</label>
+              <input type="text" id="nombre" name="nombre" placeholder="Tu nombre" required>
+            </div>
+
+            <!-- Apellido -->
+            <div class="grupo-formulario">
+              <label for="apellido">Apellido</label>
+              <input type="text" id="apellido" name="apellido" placeholder="Tu apellido" required>
+            </div>
+
+            <!-- Email -->
+            <div class="grupo-formulario">
+              <label for="email">Correo electrónico</label>
+              <input type="email" id="email" name="email" placeholder="Tu correo" required>
+            </div>
+
+            <!-- Teléfono -->
+            <div class="grupo-formulario">
+              <label for="telefono">Teléfono</label>
+              <input type="tel" id="telefono" name="telefono" placeholder="Tu teléfono" required>
+            </div>
+
+            <!-- Contraseña -->
+            <div class="grupo-formulario">
+              <label for="password">Contraseña</label>
+              <input type="password" id="password" name="password" placeholder="Crea una contraseña" required>
+            </div>
+
+            <!-- Repetir contraseña -->
+            <div class="grupo-formulario">
+            <label for="confirmPassword">Repetir contraseña</label>
+            <input type="password" id="confirmPassword" name="confirmPassword" placeholder="Repite la contraseña" required>
+            </div>
+
+            <!-- Botón -->
+            <button type="submit" class="btn btn-relleno boton-formulario">
+              Crear cuenta
+            </button>
+
+            <!-- Enlace -->
+            <p class="texto-secundario-login">
+              ¿Ya tienes cuenta?
+              <a href="login.html">Inicia sesión</a>
+            </p>
+
+          </form>
+        </div>
+
+      </div>
+    </section>
+
+  </main>
+
+ <!-- PIE -->
+  <footer id="contacto" class="pie">
+    <div class="contenedor estructura-pie">
+
+      <div>
+        <h3>Arena Padel Club</h3>
+        <p>Madrid, España</p>
+      </div>
+
+      <div>
+        <h3>Contacto</h3>
+        <p>contacto@arenapadelclub.com</p>
+        <p>+34 600 000 000</p>
+      </div>
+
+      <div>
+        <h3>© 2026</h3>
+        <p>Todos los derechos reservados.</p>
+      </div>
+
+    </div>
+  </footer>
+
+</body>
+</html>

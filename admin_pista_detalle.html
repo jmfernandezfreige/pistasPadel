@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Gestion Pista | Arena Padel Club</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+ <!-- CABECERA -->
+  <header class="cabecera">
+    <div class="contenedor estructura-cabecera">
+
+      <!-- Logotipo -->
+      <div class="logotipo-cabecera">
+        <a href="index_log_admin.html">
+          <img src="img/logo_arena_padel_club.png" alt="Arena Padel Club">
+        </a>
+      </div>
+
+      <!-- Navegación -->
+      <nav class="navegacion-inicio">
+        <a href="index_log_admin.html#inicio">Inicio</a>
+        <a href="index_log_admin.html#blog">Blog</a>
+        <a href="index_log_admin.html#instalaciones">Instalaciones</a>
+        <a href="admin_pistas.html">Pistas</a>
+        <a href="index_log_admin.html#contacto">Contacto</a>
+      </nav>
+
+      <!-- Usuario logueado -->
+      <div class="menu-usuario">
+        <button class="btn btn-claro usuario-activador">
+          Hola, ADMINISTRADOR
+        </button>
+
+        <div class="desplegable-usuario">
+          <a href="admin_usuario_detalle.html">Mis datos</a>
+          <a href="admin_usuarios.html">Gestionar Usuarios</a>
+          <a href="admin_pistas.html">Gestionar Pistas</a>
+          <a href="admin_reservas.html">Gestionar Reservas</a>
+          <a href="index.html">Cerrar Sesión</a>
+        </div>
+      </div>
+
+    </div>
+  </header>
+
+  <main>
+
+    <!-- BANNER -->
+    <section class="entrada entrada-pequena">
+      <div class="contenedor estructura-entrada">
+
+        <div class="entrada-texto">
+          <p class="definicion">Gestión de la pista</p>
+          <h1>Detalle de la Pista</h1>
+          <p class="descripcion-entrada">
+            Consulta los detalles y gestiona la pista del sistema.
+          </p>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- DATOS PISTA -->
+    <section class="seccion-login">
+      <div class="contenedor">
+
+        <div class="caja">
+
+          <div class="formulario-login">
+
+            <!-- Nombre -->
+            <div class="grupo-formulario fila-dato">
+                <label>Nombre de la pista</label>
+                <input type="text" value="El Arenal">
+                <button class="btn btn-claro">Modificar</button>
+            </div>
+
+            <!--Ubicacion -->
+            <div class="grupo-formulario fila-dato">
+                <label>Ubicacion</label>
+                <input type="text" value="Sol">
+                <button class="btn btn-claro">Modificar</button>
+            </div>
+
+            <!-- Precio por hora -->
+            <div class="grupo-formulario fila-dato">
+                <label>Precio por hora</label>
+                <input type="text" value="18 €">
+                <button class="btn btn-claro">Modificar</button>
+            </div>
+
+            <!-- Estado -->
+            <div class="grupo-formulario fila-dato">
+                <label>Estado de la pista</label>
+                <select id="activa" name="activa">
+                  <option value="true" selected>Activa</option>
+                  <option value="false">Desactivada</option>
+                </select>
+                <button class="btn btn-claro">Modificar</button>
+            </div>
+
+          </div>
+
+        </div>
+
+      </div>
+    </section>
+
+  </main>
+
+  <!-- FOOTER -->
+  <footer class="pie">
+    <div class="contenedor estructura-pie">
+
+      <div>
+        <h3>Arena Padel Club</h3>
+        <p>Madrid, España</p>
+      </div>
+
+      <div>
+        <h3>Contacto</h3>
+        <p>contacto@arenapadelclub.com</p>
+        <p>+34 600 000 000</p>
+      </div>
+
+      <div>
+        <h3>© 2026</h3>
+        <p>Todos los derechos reservados.</p>
+      </div>
+
+    </div>
+  </footer>
+
+</body>
+</html>

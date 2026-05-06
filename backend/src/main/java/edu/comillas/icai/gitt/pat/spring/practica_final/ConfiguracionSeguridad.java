@@ -1,0 +1,82 @@
+package edu.comillas.icai.gitt.pat.spring.practica_final;
+
+
+import edu.comillas.icai.gitt.pat.spring.practica_final.entidad.Usuario;
+import edu.comillas.icai.gitt.pat.spring.practica_final.repositorio.RepoUsuario;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpStatus;
+import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
+import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.core.userdetails.User;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.web.SecurityFilterChain;
+
+// Las clases @Configuration y sus métodos @Bean crean objetos que deben ejecutarse automáticamente
+@Configuration @EnableMethodSecurity
+public class ConfiguracionSeguridad {
+
+    //AÑADIMOS EL ALMACEN DE DATOS
+    //private final AlmacenDatos almacen;
+
+    /*public ConfiguracionSeguridad(AlmacenDatos almacen) {
+        this.almacen = almacen;
+    }
+     */
+
+    @Autowired
+    RepoUsuario repoUsuario;
+
+    @Bean
+    public UserDetailsService userDetailsService() {
+        return username -> {
+
+            //Usuario u = almacen.buscarPorEmail(username);
+            Usuario u = repoUsuario.findByEmail(username);
+
+            if (u == null) {
+                throw new UsernameNotFoundException("Usuario no encontrado");
+            }
+
+            return User.withDefaultPasswordEncoder()
+                    .username(u.getEmail())
+                    .password(u.getPassword()) // contraseña en texto plano
+                    .roles(u.getRol().getNombreRol().name()) // USER o ADMIN
+                    .build();
+        };
+    }
+
+
+    @Bean
+    public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
+
+        http.csrf(csrf -> csrf.disable()); //Desactivar protección CSRF (Utilizamos PostMan no HTML)
+
+        http.authorizeHttpRequests(auth -> auth
+                .requestMatchers("/pistaPadel/auth/register").permitAll() //No es necesario para el registro
+                .requestMatchers("/pistaPadel/auth/login").permitAll() //Se permite para loggearte
+                .requestMatchers("/h2-console/**").permitAll() //Para acceder a la base de datos
+                .anyRequest().authenticated() );//Las demás rutas exigen login
+
+        //PARA QUE FUNCIONE LA BASE DE DATOS
+        http.headers(headers -> headers.frameOptions(frame -> frame.sameOrigin()));
+
+        //LOGIN
+        http.formLogin(form -> form
+                .loginProcessingUrl("/pistaPadel/auth/login") //Definimos la URL
+                .successHandler((req, res, auth) -> res.setStatus(HttpStatus.OK.value()))
+                .failureHandler((req, res, ex) -> res.setStatus(HttpStatus.UNAUTHORIZED.value()))
+        );
+
+        // LOGOUT
+        http.logout(logout -> logout
+                .logoutUrl("/pistaPadel/auth/logout") //Definimos la URL
+                .logoutSuccessHandler((req, res, auth) -> res.setStatus(HttpStatus.NO_CONTENT.value()))
+        );
+
+        return http.build();
+        }
+}
+
