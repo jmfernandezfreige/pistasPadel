@@ -1,5 +1,7 @@
 package edu.comillas.icai.gitt.pat.spring.practica_final.entidad;
 
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
@@ -39,6 +41,7 @@ public class Pista {
 
     @OneToMany(mappedBy = "pista", cascade = CascadeType.ALL, orphanRemoval = true)
     @ToString.Exclude
+    @JsonIgnore
     private List<Reserva> reservas;
 
 
