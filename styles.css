@@ -457,7 +457,7 @@ p {
 
 
 /* USUARIO LOGUEADO EN CABECERA */
-.menu-usuario {
+[class*="menu-"]  {
   position: relative;
   justify-self: end;
 }
@@ -488,7 +488,7 @@ p {
   background-color: var(--color_fondoII);
 }
 
-.menu-usuario:hover .desplegable-usuario {
+[class*="o"]:hover .desplegable-usuario {
   opacity: 1;
   visibility: visible;
 }
@@ -626,7 +626,7 @@ p {
     text-align: center;
   }
 
-  .menu-usuario {
+  [class*="menu-"]  {
     justify-self: center;
   }
 
