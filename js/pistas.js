@@ -1,0 +1,1 @@
+const API_PISTAS = "http://localhost:8080/pistaPadel/courts"
