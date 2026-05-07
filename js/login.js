@@ -1,4 +1,4 @@
-const API_LOGIN = "http://localhost:8080/pistaPadel/auth/login";
+const API_LOGIN = "http://localhost:8080/pistaPadel/auth/me";
 
 const form = document.getElementById("formulario-login");
 
@@ -13,32 +13,37 @@ async function iniciarSesion(event) {
     const correo = formData.get("correo");
     const contrasena = formData.get("contrasena");
 
-    //Parámetros que necesita nuestra clase seguridad para el login
-    const parametros = new URLSearchParams();
-    parametros.append("username", correo);
-    parametros.append("password", contrasena);
+    const credenciales = correo + ":" + contrasena;
+    const tokenCreado = btoa(credenciales);
 
     try {
         const respuesta = await fetch(API_LOGIN, {
-            method: 'POST',
+            method: 'GET',
             mode: 'cors',
-            body: parametros,
             headers: {
-                'Content-Type': 'application/x-www-form-urlencoded'
-            },
-            credentials: 'include'
+                'Content-Type': 'application/x-www-form-urlencoded',
+                'Authorization': 'Basic ' + tokenCreado 
+            }
         });
 
         if (respuesta.ok) {
-            console.log("Inicio de sesión exitoso")
+            console.log("Inicio de sesión exitoso");
+
+            localStorage.setItem('token', tokenCreado);
+
             window.location.href = "index.html";
         } else {
             console.log("Credenciales incorrectos");
-            //form.innerHTML +=  '<p class="aviso-form">Usuario y/o contraseña incorrectos</p>';
+            mostrarError();
         }
     } catch (error) {
         console.log("Error inesperado: ", error);
-        //form.innerHTML +=  '<p class="aviso-form">Usuario y/o contraseña incorrectos</p>';
+        mostrarError();
     }
-    
+}
+
+function mostrarError() {
+    const errorPrevio = document.querySelector(".aviso-form");
+    if (errorPrevio) errorPrevio.remove();
+    form.insertAdjacentHTML('beforeend', '<p class="aviso-form">Usuario y/o contraseña incorrectos</p>');
 }

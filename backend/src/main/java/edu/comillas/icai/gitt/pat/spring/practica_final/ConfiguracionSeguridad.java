@@ -1,6 +1,5 @@
 package edu.comillas.icai.gitt.pat.spring.practica_final;
 
-
 import edu.comillas.icai.gitt.pat.spring.practica_final.entidad.Usuario;
 import edu.comillas.icai.gitt.pat.spring.practica_final.repositorio.RepoUsuario;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,6 +8,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -19,59 +19,60 @@ import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
 import java.util.Arrays;
 
-// Las clases @Configuration y sus métodos @Bean crean objetos que deben ejecutarse automáticamente
-@Configuration @EnableMethodSecurity
+@Configuration
+@EnableMethodSecurity
 public class ConfiguracionSeguridad {
+
     @Autowired
     RepoUsuario repoUsuario;
 
     @Bean
     public UserDetailsService userDetailsService() {
         return username -> {
-
-            //Usuario u = almacen.buscarPorEmail(username);
             Usuario u = repoUsuario.findByEmail(username);
 
             if (u == null) {
                 throw new UsernameNotFoundException("Usuario no encontrado");
             }
 
-            return User.withDefaultPasswordEncoder()
+            return User.builder()
                     .username(u.getEmail())
-                    .password(u.getPassword()) // contraseña en texto plano
-                    .roles(u.getRol().getNombreRol().name()) // USER o ADMIN
+                    .password("{noop}" + u.getPassword()) // Mantenemos el {noop} para texto plano
+                    .roles(u.getRol().getNombreRol().name())
                     .build();
         };
     }
 
-
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
 
-        http.csrf(csrf -> csrf.disable()); //Desactivar protección CSRF (Utilizamos PostMan no HTML)
-        http.cors(cors -> cors.configurationSource(corsConfigurationSource()));
+        http.csrf(csrf -> csrf.disable());
+        http.cors(org.springframework.security.config.Customizer.withDefaults());
+
+        http.sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
 
         http.authorizeHttpRequests(auth -> auth
-                .requestMatchers("/pistaPadel/auth/register").permitAll() //No es necesario para el registro
-                .requestMatchers("/pistaPadel/auth/login").permitAll() //Se permite para loggearte
-                .requestMatchers("/h2-console/**").permitAll() //Para acceder a la base de datos
-                .anyRequest().authenticated() );//Las demás rutas exigen login
+                .requestMatchers("/pistaPadel/auth/register").permitAll()
+                .requestMatchers("/pistaPadel/auth/login").permitAll()
+                .requestMatchers("/h2-console/**").permitAll()
+                .requestMatchers(org.springframework.http.HttpMethod.GET, "/pistaPadel/courts").permitAll()
+                .anyRequest().authenticated()
+        );
 
-        //PARA QUE FUNCIONE LA BASE DE DATOS
         http.headers(headers -> headers.frameOptions(frame -> frame.sameOrigin()));
 
-        //LOGIN
         http.formLogin(form -> form
-                .loginProcessingUrl("/pistaPadel/auth/login") //Definimos la URL
+                .loginProcessingUrl("/pistaPadel/auth/login")
                 .successHandler((req, res, auth) -> res.setStatus(HttpStatus.OK.value()))
                 .failureHandler((req, res, ex) -> res.setStatus(HttpStatus.UNAUTHORIZED.value()))
         );
 
-        // LOGOUT
         http.logout(logout -> logout
-                .logoutUrl("/pistaPadel/auth/logout") //Definimos la URL
+                .logoutUrl("/pistaPadel/auth/logout")
                 .logoutSuccessHandler((req, res, auth) -> res.setStatus(HttpStatus.NO_CONTENT.value()))
         );
+
+        http.httpBasic(httpBasic -> {});
 
         return http.build();
     }
@@ -80,21 +81,15 @@ public class ConfiguracionSeguridad {
     CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
 
-        configuration.setAllowedOrigins(Arrays.asList(
-                "http://127.0.0.1:3000",
-                "http://localhost:63342",
-                "https://jmfernandezfreige.github.io"
-        ));
-
+        configuration.setAllowedOrigins(Arrays.asList("*"));
         configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PATCH", "PUT", "DELETE", "OPTIONS"));
-        configuration.setAllowedHeaders(Arrays.asList("Authorization", "Content-Type"));
 
-        configuration.setAllowCredentials(true);
+        configuration.setAllowedHeaders(Arrays.asList("Authorization", "Content-Type", "Accept"));
+
+        configuration.setAllowCredentials(false);
 
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         source.registerCorsConfiguration("/**", configuration);
         return source;
     }
-
 }
-

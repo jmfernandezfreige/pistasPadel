@@ -5,16 +5,24 @@ document.addEventListener("DOMContentLoaded", cargarSesion);
 async function cargarSesion() {
     const contenedor = document.getElementById("contenedor-sesion");
 
+    const token = localStorage.getItem('token');
+
+    if (!token) {
+        pintarMenuNoLogueado(contenedor);
+        return;
+    }
+
     try {
         const respuesta = await fetch(`${API}/pistaPadel/auth/me`, {
-            method: "GET",
+            method: 'GET',
             headers: {
-                "Accept": "application/json" 
+                'Accept': 'application/json',
+                'Authorization': "Basic " + token
             },
-            credentials: "include"
         });
 
         if (!respuesta.ok) {
+            localStorage.removeItem('token');
             pintarMenuNoLogueado(contenedor);
             return;
         }
@@ -97,10 +105,8 @@ function activarLogout() {
     botonCerrarSesion.addEventListener("click", async function (event) {
         event.preventDefault();
 
-        await fetch(`${API}/pistaPadel/auth/logout`, {
-            method: "POST",
-            credentials: "include"
-        });
+        localStorage.removeItem('token');
+        fetch(`${API}/pistaPadel/auth/logout`, { method: "POST" });
 
         window.location.href = "index.html";
     });
