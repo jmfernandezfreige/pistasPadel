@@ -183,7 +183,8 @@ p {
   background-color: var(--color_fondoII);
 }
 
-.btn-pequeno {
+.btn-pequeno,
+.btn-borrar {
   padding: 0.4rem 0.9rem;
   font-size: 0.85rem;
 }
