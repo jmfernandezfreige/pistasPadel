@@ -34,11 +34,11 @@ async function iniciarSesion(event) {
             window.location.href = "index.html";
         } else {
             console.log("Credenciales incorrectos");
-            form.innerHTML +=  '<p class="aviso-form">Usuario y/o contraseña incorrectos</p>';
+            //form.innerHTML +=  '<p class="aviso-form">Usuario y/o contraseña incorrectos</p>';
         }
     } catch (error) {
         console.log("Error inesperado: ", error);
-        form.innerHTML +=  '<p class="aviso-form">Usuario y/o contraseña incorrectos</p>';
+        //form.innerHTML +=  '<p class="aviso-form">Usuario y/o contraseña incorrectos</p>';
     }
     
 }
