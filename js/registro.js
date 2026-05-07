@@ -33,11 +33,10 @@ async function registrarUsuario(event) {
             },
             body: JSON.stringify({
                 nombre: nombre,
-                appellidos: appellido,
+                apellidos: appellido,
                 email: email,
                 password: password,
                 telefono: telefono,
-                fechaRegistro: Date.now(),
                 rol: { idRol: 2 },
                 activo: true
             })
