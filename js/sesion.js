@@ -9,6 +9,7 @@ async function cargarSesion() {
 
     if (!token) {
         pintarMenuNoLogueado(contenedor);
+        localStorage.removeItem('rol');
         return;
     }
 
@@ -39,7 +40,7 @@ async function cargarSesion() {
 
         const rol = usuario.rol?.nombreRol;
         localStorage.setItem('rol', rol);
-        
+
         if (rol === "ADMIN") {
             pintarMenuAdmin(contenedor);
         } else {
@@ -107,6 +108,7 @@ function activarLogout() {
         event.preventDefault();
 
         localStorage.removeItem('token');
+        localStorage.removeItem('rol');
         fetch(`${API}/pistaPadel/auth/logout`, { method: "POST" });
 
         window.location.href = "index.html";
