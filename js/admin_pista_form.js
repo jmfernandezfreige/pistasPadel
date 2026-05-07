@@ -11,11 +11,21 @@ document.addEventListener("DOMContentLoaded", () => {
     formulario.addEventListener("submit", async (event) => {
         event.preventDefault(); /* Para evitar que se recargue la página automáticamente */
 
+        const formData = new FormData(form);
+
+        const nombre = formData.get("nombre");
+        const ubicacion = formData.get("ubicacion");
+        const precioHora = formData.get("precioHora");
+        const activa = formData.get("activa");
+        const fechaAlta = formData.get("fechaAlta");
+
+        /* Se puede hacer tmb con los ids
         const nombre = document.getElementById("nombre").value.trim();
         const ubicacion = document.getElementById("ubicacion").value.trim();
         const precioHora = parseFloat(document.getElementById("precioHora").value);
         const activa = document.getElementById("activa").value;
         const fechaAlta = document.getElementById("fechaAlta").value;
+        */
 
         if (!nombre || !ubicacion || isNaN(precioHora) || precioHora < 0 || activa === "" || !fechaAlta) {
             alert("Por favor, completa todos los campos correctamente.");
