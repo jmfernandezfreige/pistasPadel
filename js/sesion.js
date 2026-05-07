@@ -11,7 +11,13 @@ async function cargarSesion() {
             credentials: "include"
         });
 
-        if (!respuesta.ok) {
+        if (!respuesta.ok || respuesta.redirected) {
+            pintarMenuNoLogueado(contenedor);
+            return;
+        }
+
+        const contentType = respuesta.headers.get("content-type");
+        if (!contentType || !contentType.includes("application/json")) {
             pintarMenuNoLogueado(contenedor);
             return;
         }
