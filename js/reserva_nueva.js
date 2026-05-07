@@ -45,6 +45,9 @@ document.addEventListener("DOMContentLoaded", function () {
             // Borramos las pistas 
             contenedorPistas.innerHTML = "";
 
+            const parametrosURL = new URLSearchParams(window.location.search);
+            const idPistaURL = parametrosURL.get("idPista");
+
             // Pintamos cada pista en un botón
             pistas.forEach(function (pista) {
                 const boton = document.createElement("button");
@@ -58,6 +61,10 @@ document.addEventListener("DOMContentLoaded", function () {
                 });
 
                 contenedorPistas.appendChild(boton);
+
+                if (idPistaURL && pista.idPista == idPistaURL) {
+                    seleccionarPista(pista, boton);
+                }
             });
 
             // Borramos las horas

@@ -66,7 +66,7 @@ async function cargarPistas() {
                             <span>${pista.precioHora}€</span>
                             <div>
                                 <a href="pista_detalle.html?id=${pista.idPista}" class="btn btn-claro btn-pequeno">Detalles</a>
-                                <a href="${urlReserva}" class="btn btn-relleno btn-pequeno">Reservar</a>
+                                <a href="${urlReserva}?idPista=${pista.idPista}" class="btn btn-relleno btn-pequeno">Reservar</a>
                             </div>
                         </div>
                     `;
