@@ -40,7 +40,7 @@ async function registrarUsuario(event) {
                 fechaRegistro: Date.now(),
                 rol: { idRol: 2 },
                 activo: true
-            });
+            })
         });
 
         if (respuesta.ok) {
