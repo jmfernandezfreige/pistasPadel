@@ -109,7 +109,7 @@ public class ServicioUsuarios {
         boolean esAdmin = authentication.getAuthorities().stream()
                 .anyMatch(a -> a.getAuthority().equals("ROLE_ADMIN"));
 
-        boolean esDueno = usuarioLogueado.getIdUsuario() == userId;
+        boolean esDueno = usuarioLogueado.getIdUsuario().equals(userId);
 
         if (!esAdmin && !esDueno) {
             throw new ResponseStatusException(
