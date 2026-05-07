@@ -8,22 +8,28 @@ async function cargarSesion() {
     try {
         const respuesta = await fetch(`${API}/pistaPadel/auth/me`, {
             method: "GET",
+            headers: {
+                "Accept": "application/json" 
+            },
             credentials: "include"
         });
 
-        if (!respuesta.ok || respuesta.redirected) {
+        if (!respuesta.ok) {
             pintarMenuNoLogueado(contenedor);
             return;
         }
 
-        const contentType = respuesta.headers.get("content-type");
-        if (!contentType || !contentType.includes("application/json")) {
+        const textoCrudo = await respuesta.text();
+        
+        let usuario;
+        try {
+            usuario = JSON.parse(textoCrudo);
+        } catch (e) {
             pintarMenuNoLogueado(contenedor);
             return;
         }
 
-        const usuario = await respuesta.json();
-        const rol = usuario.rol?.nombreRol;
+        const rol = usuario.rol?.nombreRol || usuario.rol; // Por si viene como objeto o como string
 
         if (rol === "ADMIN") {
             pintarMenuAdmin(contenedor);
