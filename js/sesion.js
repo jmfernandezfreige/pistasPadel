@@ -37,8 +37,9 @@ async function cargarSesion() {
             return;
         }
 
-        const rol = usuario.rol?.nombreRol || usuario.rol; // Por si viene como objeto o como string
-
+        const rol = usuario.rol?.nombreRol;
+        localStorage.setItem('rol', rol);
+        
         if (rol === "ADMIN") {
             pintarMenuAdmin(contenedor);
         } else {

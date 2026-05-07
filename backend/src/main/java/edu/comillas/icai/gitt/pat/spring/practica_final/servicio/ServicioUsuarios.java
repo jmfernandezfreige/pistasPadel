@@ -37,7 +37,12 @@ public class ServicioUsuarios {
             );
         }
 
-        nuevoUsuario.setRol(repoRol.findByNombreRol(Rol.NombreRol.USER));
+        if (nuevoUsuario.getRol().getIdRol() == null) {
+            nuevoUsuario.setRol(repoRol.findByNombreRol(Rol.NombreRol.USER));
+        } else {
+            nuevoUsuario.setRol(repoRol.findById(nuevoUsuario.getRol().getIdRol())
+                    .orElse(repoRol.findByNombreRol(Rol.NombreRol.USER)));
+        }
         nuevoUsuario.setFechaRegistro(LocalDateTime.now());
 
         repoUsuario.save(nuevoUsuario);

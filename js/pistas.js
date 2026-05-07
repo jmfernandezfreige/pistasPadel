@@ -4,8 +4,9 @@ const tablaPistas = document.getElementById("listado-pistas");
 document.addEventListener("DOMContentLoaded", cargarPistas);
 
 async function cargarPistas() {
+    const rol = localStorage.getItem('rol');
+
     try {
-        // 1. Guardamos la cabecera en una variable de texto
         let htmlContenido = `
             <div class="fila-dato cabecera-listado">
                 <span>Nombre</span>
@@ -24,18 +25,33 @@ async function cargarPistas() {
         if (respuesta.ok) {
             const listaPistas = await respuesta.json();
 
-            listaPistas.forEach((pista) => {
-                htmlContenido += `
-                    <div class="fila-dato">
-                        <span>${pista.nombre}</span>
-                        <span>${pista.precioHora}€</span>
-                        <div>
-                            <a href="pista_detalle.html?id=${pista.id}" class="btn btn-claro btn-pequeno">Detalles</a>
-                            <a href="login.html" class="btn btn-relleno btn-pequeno">Reservar</a>
+            if (rol === "ADMIN") {
+                listaPistas.forEach((pista) => {
+                    htmlContenido += `
+                        <div class="fila-dato">
+                            <span>${pista.nombre}</span>
+                            <span>${pista.precioHora}€</span>
+                            <div>
+                                <a href="pista_detalle.html?id=${pista.id}" class="btn btn-claro btn-pequeno">Modificar</a>
+                                <a href="login.html" class="btn btn-relleno btn-pequeno" id="borrar-pista">Eliminar</a>
+                            </div>
                         </div>
-                    </div>
-                `;                
-            });
+                    `;
+                });
+            } else {
+                listaPistas.forEach((pista) => {
+                    htmlContenido += `
+                        <div class="fila-dato">
+                            <span>${pista.nombre}</span>
+                            <span>${pista.precioHora}€</span>
+                            <div>
+                                <a href="pista_detalle.html?id=${pista.id}" class="btn btn-claro btn-pequeno">Detalles</a>
+                                <a href="login.html" class="btn btn-relleno btn-pequeno">Reservar</a>
+                            </div>
+                        </div>
+                    `;
+                });
+            }
 
             tablaPistas.innerHTML = htmlContenido;
 

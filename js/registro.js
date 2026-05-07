@@ -37,7 +37,7 @@ async function registrarUsuario(event) {
                 email: email,
                 password: password,
                 telefono: telefono,
-                rol: { idRol: 2 },
+                rol: { idRol: 1 },
                 activo: true
             })
         });
