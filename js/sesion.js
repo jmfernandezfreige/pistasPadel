@@ -6,17 +6,17 @@ async function cargarSesion() {
     const contenedor = document.getElementById("contenedor-sesion");
 
     try {
-        const response = await fetch(`${API}/pistaPadel/auth/me`, {
+        const respuesta = await fetch(`${API}/pistaPadel/auth/me`, {
             method: "GET",
             credentials: "include"
         });
 
-        if (!response.ok) {
+        if (!respuesta.ok) {
             pintarMenuNoLogueado(contenedor);
             return;
         }
 
-        const usuario = await response.json();
+        const usuario = await respuesta.json();
         const rol = usuario.rol?.nombreRol;
 
         if (rol === "ADMIN") {
