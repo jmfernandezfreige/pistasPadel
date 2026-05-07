@@ -50,7 +50,7 @@ async function cargarPistas() {
                             <span>${pista.nombre}</span>
                             <span>${pista.precioHora}€</span>
                             <div>
-                                <a href="pista_detalle.html?id=${pista.idPista}" class="btn btn-claro btn-pequeno">Modificar</a>
+                                <a href="admin_pista_form.html?id=${pista.idPista}" class="btn btn-claro btn-pequeno">Modificar</a>
                                 <a href="#" class="btn btn-relleno btn-borrar" data-id="${pista.idPista}">Eliminar</a>
                             </div>
                         </div>
