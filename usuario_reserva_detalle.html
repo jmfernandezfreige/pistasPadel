@@ -16,33 +16,22 @@
 
       <!-- Logotipo -->
       <div class="logotipo-cabecera">
-        <a href="index_log_user.html">
+        <a href="index.html">
           <img src="img/logo_arena_padel_club.png" alt="Arena Padel Club">
         </a>
       </div>
       
       <!-- Navegación -->
       <nav class="navegacion-inicio">
-        <a href="index_log_user.html#inicio">Inicio</a>
-        <a href="index_log_user.html#blog">Blog</a>
-        <a href="index_log_user.html#instalaciones">Instalaciones</a>
-        <a href="usuario_pistas.html">Pistas</a>
-        <a href="index_log_user.html#contacto">Contacto</a>
+        <a href="index.html#inicio">Inicio</a>
+        <a href="index.html#blog">Blog</a>
+        <a href="index.html#instalaciones">Instalaciones</a>
+        <a href="pistas.html">Pistas</a>
+        <a href="index.html#contacto">Contacto</a>
       </nav>
 
       <!-- Usuario logueado -->
-      <div class="menu-usuario">
-        <button class="btn btn-claro usuario-activador">
-          Hola, Isabel
-        </button>
-
-        <div class="desplegable-usuario">
-          <a href="usuario_detalle.html">Mis datos</a>
-          <a href="usuario_reservas.html">Mis reservas</a>
-          <a href="usuario_reserva_nueva.html">Nueva reserva</a>
-          <a href="index.html">Cerrar Sesión</a>
-        </div>
-      </div>
+      <div class="menu-usuario" id="contenedor-sesion"></div>
 
     </div>
   </header>
@@ -156,7 +145,8 @@
 
     </div>
   </footer>
+
+  <script src="js/sesion.js"></script>
   
 </body>
-
 </html>
