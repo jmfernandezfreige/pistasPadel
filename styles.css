@@ -1,3 +1,19 @@
+/*
+  Resumen selectores:
+  elemento{}
+  .clase{}
+  #id{}
+  elemento[atributo="valor"]{}   ^="" empieza por  $="" termina en  *="" contiene
+  *{} todos
+  A B {} descendiente
+  A > B hijo directo
+  A ~ B todos los B al mismo nivel que A
+  A + B primer B dsps de A al mismo nivel
+
+ */
+
+
+
 /* VARIABLES GENERALES*/
 :root {
   --color_fondo: #f7f4f0;
