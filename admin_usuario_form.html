@@ -1,14 +1,16 @@
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Nueva pista | Arena Padel Club</title>
   <link rel="stylesheet" href="styles.css">
 </head>
+
 <body>
 
- <!-- CABECERA -->
+  <!-- CABECERA -->
   <header class="cabecera">
     <div class="contenedor estructura-cabecera">
 
@@ -29,19 +31,7 @@
       </nav>
 
       <!-- Usuario logueado -->
-      <div class="menu-usuario">
-        <button class="btn btn-claro usuario-activador">
-          Hola, ADMINISTRADOR
-        </button>
-
-        <div class="desplegable-usuario">
-          <a href="admin_usuario_detalle.html">Mis datos</a>
-          <a href="admin_usuarios.html">Gestionar Usuarios</a>
-          <a href="admin_pistas.html">Gestionar Pistas</a>
-          <a href="admin_reservas.html">Gestionar Reservas</a>
-          <a href="index.html">Cerrar Sesión</a>
-        </div>
-      </div>
+      <div id="contenedor-sesion"></div>
 
     </div>
   </header>
@@ -75,14 +65,15 @@
               <input type="email" id="email" name="email" placeholder="email del usuario" required>
             </div>
 
-             <div class="grupo-formulario">
+            <div class="grupo-formulario">
               <label for="contrasena">Contraseña</label>
               <input type="password" id="contrasena" name="contrasena" placeholder="contraseña del usuario" required>
             </div>
 
             <div class="grupo-formulario">
-            <label for="confirmarContrasena">Repetir contraseña</label>
-            <input type="password" id="confirmarContrasena" name="confirmarContrasena" placeholder="Repite la contraseña del usuario" required>
+              <label for="confirmarContrasena">Repetir contraseña</label>
+              <input type="password" id="confirmarContrasena" name="confirmarContrasena"
+                placeholder="Repite la contraseña del usuario" required>
             </div>
 
             <div class="grupo-formulario">
@@ -90,7 +81,7 @@
               <input type="tel" id="telefono" name="telefono" placeholder="teléfono">
             </div>
 
-             <div class="grupo-formulario">
+            <div class="grupo-formulario">
               <label for="rol">Rol del usuario</label>
               <select id="rol" name="rol" required>
                 <option value="" disabled selected>Selecciona el rol</option>
@@ -140,5 +131,9 @@
     </div>
   </footer>
 
+  <script src="js/sesion.js"></script>
+  <script src="js/admin_usuario_form.js"></script>
+
 </body>
+
 </html>

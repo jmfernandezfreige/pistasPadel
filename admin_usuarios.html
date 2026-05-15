@@ -1,15 +1,16 @@
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Gestion Usuarios | Arena Padel Club</title>
   <link rel="stylesheet" href="styles.css">
-    <script src="js/admin_usuarios.js"></script>
 </head>
+
 <body>
 
- <!-- CABECERA -->
+  <!-- CABECERA -->
   <header class="cabecera">
     <div class="contenedor estructura-cabecera">
 
@@ -30,77 +31,60 @@
       </nav>
 
       <!-- Usuario logueado -->
-      <div class="menu-usuario">
-        <button class="btn btn-claro usuario-activador">
-          Hola, ADMINISTRADOR
-        </button>
-
-        <div class="desplegable-usuario">
-          <a href="admin_usuario_detalle.html">Mis datos</a>
-          <a href="admin_usuarios.html">Gestionar Usuarios</a>
-          <a href="admin_pistas.html">Gestionar Pistas</a>
-          <a href="admin_reservas.html">Gestionar Reservas</a>
-          <a href="index.html">Cerrar Sesión</a>
-        </div>
-      </div>
-
+      <div id="contenedor-sesion"></div>
     </div>
   </header>
 
   <main>
     <!-- TITULO -->
     <section class="entrada entrada-pequena">
-        <div class="contenedor estructura-entrada">
+      <div class="contenedor estructura-entrada">
 
         <div class="entrada-texto">
-            <p class="definicion">Gestión</p>
-            <h1>Usuarios</h1>
-            <p class="descripcion-entrada">
+          <p class="definicion">Gestión</p>
+          <h1>Usuarios</h1>
+          <p class="descripcion-entrada">
             Administra los usuarios del sistema: crea, edita o elimina registros.
-            </p>
+          </p>
         </div>
 
-        </div>
+      </div>
     </section>
 
     <!-- CONTENIDO PRINCIPAL -->
     <section class="seccion-login">
-        
-        <div class="contenedor">
+
+      <div class="contenedor">
 
         <!-- ACCIONES SUPERIORES -->
         <div class="barra-acciones">
-        
-        <a href="admin_usuario_form.html" class="btn btn-relleno">Añadir usuario</a>
 
-        <input 
-            type="text" 
-            class="buscador"
-            placeholder="Buscar usuario..."
-        >
+          <a href="admin_usuario_form.html" class="btn btn-relleno">Añadir usuario</a>
+
+          <input type="text" class="buscador" placeholder="Buscar usuario...">
 
         </div>
 
         <!-- LISTADO DE USUARIOS -->
         <div class="caja">
 
-            <!-- CABECERA -->
-            <div class="fila-dato cabecera-listado">
+          <!-- CABECERA -->
+          <div class="fila-dato cabecera-listado">
             <span>Nombre completo</span>
             <span>Correo</span>
             <span>Acciones</span>
-            </div>
+          </div>
 
-            <div id="listado-usuarios"></div>
-
-        </div>
+          <div id="listado-usuarios"></div>
 
         </div>
+
+      </div>
     </section>
 
   </main>
 
-   <!-- PIE -->
+  <!-- PIE -->
   <footer id="contacto" class="pie">
     <div class="contenedor estructura-pie">
 
@@ -123,5 +107,9 @@
     </div>
   </footer>
 
+  <script src="js/sesion.js"></script>
+  <script src="js/admin_usuarios.js"></script>
+
 </body>
+
 </html>
