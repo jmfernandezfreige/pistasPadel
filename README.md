@@ -3,10 +3,78 @@
 ## 1. Descripción general del proyecto
 
 ### 1.1 Objetivo de la práctica
+
+El objetivo de esta práctica es desarrollar una aplicación web completa para la gestión y reserva de pistas de pádel, integrando un backend con API REST y un frontend funcional conectado mediante JavaScript.
+
+El proyecto se ha realizado de forma progresiva a lo largo de varias entregas, comenzando por la implementación del backend, continuando con la creación de la interfaz mediante HTML y CSS, y finalizando con la integración dinámica del frontend con el backend mediante JavaScript.
+
+La aplicación busca simular el funcionamiento de un club de pádel real, permitiendo a los usuarios consultar pistas disponibles, registrarse, iniciar sesión y realizar reservas. Además, incluye funcionalidades específicas para administradores, orientadas a la gestión de usuarios, pistas y reservas.
+
 ### 1.2 Descripción de la aplicación
+
+**PistasPadel — Arena Padel Club** es una aplicación web para la gestión de reservas de pistas de pádel.
+
+La aplicación está dividida en dos partes principales:
+
+- **Backend**, desarrollado con Spring Boot, encargado de gestionar los datos, la lógica de negocio, la seguridad, la persistencia y los endpoints REST.
+- **Frontend**, desarrollado con HTML, CSS y JavaScript, encargado de mostrar la interfaz al usuario y comunicarse con el backend mediante peticiones `fetch`.
+
+Desde el frontend, los usuarios pueden navegar por la página principal, consultar las pistas disponibles, registrarse e iniciar sesión . Una vez autenticados, pueden acceder a sus datos, modificarlos, consultar sus propias reservas, realizar nuevas reservas y modificarlas.
+
+Por otro lado, los administradores disponen de funcionalidades adicionales para gestionar usuarios, pistas y reservas globales del sistema.
+
 ### 1.3 Perfiles de usuario: USER y ADMIN
+
+La aplicación contempla dos tipos principales de usuario:
+
+#### Usuario estándar — USER
+
+El usuario con rol `USER` representa a un cliente del club de pádel. Sus funcionalidades principales son:
+
+- Registrarse en la aplicación.
+- Iniciar sesión.
+- Consultar las pistas disponibles.
+- Ver la disponibilidad de una pista en una fecha concreta.
+- Crear nuevas reservas.
+- Consultar sus propias reservas.
+- Modificar o cancelar sus reservas.
+- Consultar y modificar sus datos personales.
+
+#### Administrador — ADMIN
+
+El usuario con rol `ADMIN` representa al personal encargado de gestionar la aplicación. Además de poder acceder a funcionalidades generales, dispone de permisos especiales para:
+
+- Consultar el listado de usuarios.
+- Modificar usuarios.
+- Dar de baja usuarios mediante baja lógica.
+- Crear nuevas pistas.
+- Modificar pistas existentes.
+- Desactivar pistas.
+- Consultar todas las reservas del sistema.
+- Filtrar reservas por fecha, pista o usuario. y modificarlas
+
+De esta forma, la aplicación diferencia claramente entre las acciones disponibles para un usuario normal y las acciones reservadas al administrador.
+
 ### 1.4 Funcionalidades principales
 
+Las funcionalidades principales implementadas en el proyecto son:
+
+- Registro de nuevos usuarios.
+- Inicio de sesión mediante autenticación.
+- Diferenciación entre usuarios normales y administradores.
+- Consulta de pistas disponibles.
+- Visualización de detalles de cada pista.
+- Consulta de disponibilidad por pista y fecha.
+- Creación de nuevas reservas.
+- Consulta de reservas del usuario autenticado.
+- Modificación y cancelación de reservas.
+- Gestión de usuarios por parte del administrador.
+- Gestión de pistas por parte del administrador.
+- Consulta global de reservas por parte del administrador.
+- Comunicación entre frontend y backend mediante `fetch`.
+- Persistencia de datos mediante base de datos H2.
+- Carga inicial de datos de prueba para usuarios, roles, pistas y reservas.
+  
 ---
 
 ## 2. Equipo de trabajo y organización SCRUM
