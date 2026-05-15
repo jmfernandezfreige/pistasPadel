@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Reservas | Arena Padel Club</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+
+<body>
+
+  <!-- CABECERA -->
+  <header class="cabecera">
+    <div class="contenedor estructura-cabecera">
+
+      <!-- Logotipo -->
+      <div class="logotipo-cabecera">
+        <a href="index.html">
+          <img src="img/logo_arena_padel_club.png" alt="Arena Padel Club">
+        </a>
+      </div>
+
+      <!-- Navegación -->
+      <nav class="navegacion-inicio">
+        <a href="index.html#inicio">Inicio</a>
+        <a href="index.html#blog">Blog</a>
+        <a href="index.html#instalaciones">Instalaciones</a>
+        <a href="pistas.html">Pistas</a>
+        <a href="index.html#contacto">Contacto</a>
+      </nav>
+
+      <!-- Usuario logueado -->
+      <div class="menu-usuario" id="contenedor-sesion"></div>
+
+    </div>
+  </header>
+
+  <main>
+
+    <!-- BANNER / TÍTULO -->
+    <section class="entrada entrada-pequena">
+      <div class="contenedor estructura-entrada">
+
+        <div class="entrada-texto">
+          <p class="definicion" id="reservas-definicion">Reservas</p>
+          <h1 id="reservas-titulo">Reservas</h1>
+          <p class="descripcion-entrada" id="reservas-descripcion">
+            Consulta y gestiona tus reservas.
+          </p>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- CONTENIDO PRINCIPAL -->
+    <section class="seccion-login">
+      <div class="contenedor">
+
+        <!-- ACCIONES SUPERIORES -->
+        <div class="barra-acciones">
+
+          <a href="reserva_nueva.html" class="btn btn-relleno" id="boton-reserva-principal">
+            Reservar nueva pista
+          </a>
+
+          <input type="text" class="buscador" placeholder="Buscar reserva...">
+
+        </div>
+
+        <!-- LISTADO DE RESERVAS -->
+        <div class="caja" id="listado-reservas">
+
+          <div class="fila-dato cabecera-listado">
+            <span>Pista</span>
+            <span>Datos de la reserva</span>
+            <span>Acciones</span>
+          </div>
+
+          <div class="fila-dato">
+            <span>Cargando reservas...</span>
+            <span></span>
+            <span></span>
+          </div>
+
+        </div>
+
+      </div>
+    </section>
+
+  </main>
+
+  <!-- PIE -->
+  <footer id="contacto" class="pie">
+    <div class="contenedor estructura-pie">
+
+      <div>
+        <h3>Arena Padel Club</h3>
+        <p>Madrid, España</p>
+      </div>
+
+      <div>
+        <h3>Contacto</h3>
+        <p>contacto@arenapadelclub.com</p>
+        <p>+34 600 000 000</p>
+      </div>
+
+      <div>
+        <h3>© 2026</h3>
+        <p>Todos los derechos reservados.</p>
+      </div>
+
+    </div>
+  </footer>
+
+  <script src="js/sesion.js"></script>
+  <script src="js/reservas.js"></script>
+
+</body>
+
+</html>

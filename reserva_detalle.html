@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Detalle de reserva | Arena Padel Club</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+
+<body>
+
+  <!-- CABECERA -->
+  <header class="cabecera">
+    <div class="contenedor estructura-cabecera">
+
+      <!-- Logotipo -->
+      <div class="logotipo-cabecera">
+        <a href="index.html">
+          <img src="img/logo_arena_padel_club.png" alt="Arena Padel Club">
+        </a>
+      </div>
+
+      <!-- Navegación -->
+      <nav class="navegacion-inicio">
+        <a href="index.html#inicio">Inicio</a>
+        <a href="index.html#blog">Blog</a>
+        <a href="index.html#instalaciones">Instalaciones</a>
+        <a href="pistas.html">Pistas</a>
+        <a href="index.html#contacto">Contacto</a>
+      </nav>
+
+      <!-- Usuario logueado -->
+      <div class="menu-usuario" id="contenedor-sesion"></div>
+
+    </div>
+  </header>
+
+  <main>
+
+    <!-- BANNER -->
+    <section class="entrada entrada-pequena">
+      <div class="contenedor estructura-entrada">
+
+        <div class="entrada-texto">
+          <p class="definicion" id="detalle-definicion">Área personal</p>
+          <h1 id="detalle-titulo">Detalle de reserva</h1>
+          <p class="descripcion-entrada" id="detalle-descripcion">
+            Consulta la información de tu reserva y realiza acciones sobre ella.
+          </p>
+        </div>
+
+        <div class="registro-login">
+          <a href="reservas.html" class="btn btn-claro">Volver a reservas</a>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- DETALLE RESERVA -->
+    <section class="seccion-login">
+
+      <div class="contenedor contenedor-2col">
+
+        <!-- FORMULARIO -->
+        <div class="caja">
+          <h3>Información de la reserva</h3>
+
+          <form id="formulario-reserva-detalle">
+
+            <!-- ID RESERVA -->
+            <div class="fila-dato">
+              <label>ID reserva</label>
+              <p id="reserva-id">Cargando...</p>
+            </div>
+
+            <!-- PISTA -->
+            <div class="grupo-formulario fila-dato">
+              <label for="pista">Pista</label>
+              <select id="pista" name="pista" required>
+                <option value="">Cargando pistas...</option>
+              </select>
+            </div>
+
+            <!-- FECHA -->
+            <div class="grupo-formulario fila-dato">
+              <label for="fechaReserva">Fecha</label>
+              <input type="date" id="fechaReserva" name="fechaReserva" required>
+            </div>
+
+            <!-- FRANJA HORARIA -->
+            <div class="grupo-formulario">
+              <label>Franja horaria</label>
+
+              <div class="rejilla-horarios-formulario" id="contenedor-horarios-detalle">
+                <p>Selecciona una pista y una fecha.</p>
+              </div>
+
+              <div class="leyenda-horarios-formulario">
+                <div class="item-leyenda">
+                  <span class="color-leyenda color-disponible"></span>
+                  <span>Disponible</span>
+                </div>
+
+                <div class="item-leyenda">
+                  <span class="color-leyenda color-ocupada"></span>
+                  <span>Ocupada</span>
+                </div>
+              </div>
+
+              <input type="hidden" id="horaInicio" name="horaInicio" required>
+              <input type="hidden" id="duracionMinutos" name="duracionMinutos" value="60" required>
+            </div>
+
+            <!-- ESTADO -->
+            <div class="fila-dato">
+              <label>Estado</label>
+              <p id="reserva-estado">Cargando...</p>
+            </div>
+
+            <!-- BOTÓN GUARDAR -->
+            <button type="submit" class="btn btn-relleno boton-formulario">
+              Guardar cambios
+            </button>
+
+          </form>
+        </div>
+
+        <!-- ACCIONES -->
+        <div class="formulario-login">
+
+          <div class="caja">
+            <h3>Acciones</h3>
+            <p class="descripcion-entrada">
+              Puedes modificar los datos de tu reserva o cancelarla si ya no vas a asistir.
+            </p>
+
+            <div class="formulario-login">
+              <a href="#" id="btn-cancelar-reserva" class="btn btn-claro boton-formulario text-center">
+                Cancelar reserva
+              </a>
+            </div>
+          </div>
+
+          <div class="caja">
+            <h3>Información adicional</h3>
+            <p class="descripcion-entrada" style="margin-bottom: 0;">
+              Recuerda presentarte con al menos 10 minutos de antelación y llevar el equipamiento adecuado.
+            </p>
+          </div>
+
+        </div>
+
+      </div>
+    </section>
+
+  </main>
+
+  <!-- PIE -->
+  <footer id="contacto" class="pie">
+    <div class="contenedor estructura-pie">
+
+      <div>
+        <h3>Arena Padel Club</h3>
+        <p>Madrid, España</p>
+      </div>
+
+      <div>
+        <h3>Contacto</h3>
+        <p>contacto@arenapadelclub.com</p>
+        <p>+34 600 000 000</p>
+      </div>
+
+      <div>
+        <h3>© 2026</h3>
+        <p>Todos los derechos reservados.</p>
+      </div>
+
+    </div>
+  </footer>
+
+  <script src="js/sesion.js"></script>
+  <script src="js/reserva_detalle.js"></script>
+
+</body>
+
+</html>

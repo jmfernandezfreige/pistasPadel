@@ -211,7 +211,7 @@ document.addEventListener("DOMContentLoaded", function () {
             }
 
             alert("Reserva creada correctamente.");
-            window.location.href = "usuario_reservas.html";
+            window.location.href = "reservas.html";
 
         } catch (error) {
             console.error("Error creando reserva:", error);
