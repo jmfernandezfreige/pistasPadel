@@ -42,7 +42,7 @@ async function cargarSesion() {
         localStorage.setItem('rol', rol);
 
         if (rol === "ADMIN") {
-            pintarMenuAdmin(contenedor);
+            pintarMenuAdmin(contenedor, usuario);
         } else {
             pintarMenuUsuario(contenedor, usuario);
         }
@@ -70,7 +70,7 @@ function pintarMenuUsuario(contenedor, usuario) {
             </button>
 
             <div class="desplegable-usuario">
-                <a href="usuario_detalle.html">Mis datos</a>
+                <a href="admin_usuario_form.html?id=${usuario.idUsuario}">Mis datos</a>
                 <a href="usuario_reservas.html">Mis reservas</a>
                 <a href="usuario_reserva_nueva.html">Nueva reserva</a>
                 <a href="#" class="cerrar-sesion">Cerrar Sesión</a>
@@ -81,7 +81,7 @@ function pintarMenuUsuario(contenedor, usuario) {
     activarLogout();
 }
 
-function pintarMenuAdmin(contenedor) {
+function pintarMenuAdmin(contenedor, usuario) {
     contenedor.innerHTML = `
         <div class="menu-usuario">
             <button class="btn btn-claro usuario-activador">
@@ -89,7 +89,7 @@ function pintarMenuAdmin(contenedor) {
             </button>
 
             <div class="desplegable-usuario">
-                <a href="admin_usuario_detalle.html">Mis datos</a>
+                <a href="admin_usuario_form.html?id=${usuario.idUsuario}">Mis datos</a>
                 <a href="admin_usuarios.html">Gestionar Usuarios</a>
                 <a href="admin_pistas.html">Gestionar Pistas</a>
                 <a href="admin_reservas.html">Gestionar Reservas</a>

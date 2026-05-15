@@ -8,6 +8,25 @@ document.addEventListener("DOMContentLoaded", async () => {
     const inputContrasena = document.getElementById("contrasena");
     const inputConfirmar = document.getElementById("confirmarContrasena");
 
+    const respuestaMe = await fetch(`${API}/pistaPadel/auth/me`, {
+    method: "GET",
+    headers: {
+        "Accept": "application/json",
+        "Authorization": "Basic " + token
+    }
+    });
+
+    const usuarioLogueado = await respuestaMe.json();
+    const esAdmin = usuarioLogueado.rol?.nombreRol === "ADMIN";
+
+    const bloqueRol = document.getElementById("rol").closest(".grupo-formulario");
+    const bloqueEstado = document.getElementById("estado").closest(".grupo-formulario");
+
+    if (!esAdmin) {
+        bloqueRol.remove();
+        bloqueEstado.remove();
+    }
+
     // MODO EDICIÓN - PATCH
     if (idUsuario) {
         document.querySelector("h1").textContent = "Modificar usuario";
@@ -60,8 +79,8 @@ document.addEventListener("DOMContentLoaded", async () => {
         const contrasena = inputContrasena.value;
         const confirmarContrasena = inputConfirmar.value;
         const telefono = document.getElementById("telefono").value.trim();
-        const rolSeleccionado = document.getElementById("rol").value;
-        const activa = document.getElementById("estado").value === "true";
+        const rolSeleccionado = esAdmin ? document.getElementById("rol").value : usuarioLogueado.rol?.nombreRol;
+        const activa = esAdmin ? document.getElementById("estado").value === "true" : usuarioLogueado.activo;
 
         if (contrasena && contrasena !== confirmarContrasena) {
             alert("Las contraseñas no coinciden. Por favor, revísalas.");
@@ -86,7 +105,7 @@ document.addEventListener("DOMContentLoaded", async () => {
         // Como 'Rol' es @ManyToOne, enviamos un objeto.
         // Si tu backend falla porque espera un ID, cambia esto a: { id: (rolSeleccionado === "ADMIN" ? 1 : 2) } 
         // asumiendo los IDs de tu tabla Rol.
-        usuarioData.rol = { nombre: rolSeleccionado }; 
+        usuarioData.rol = { nombreRol: rolSeleccionado };
 
         const url = idUsuario ? `${API}/users/${idUsuario}` : `${API}/auth/register`;
         const metodo = idUsuario ? 'PATCH' : 'POST';
