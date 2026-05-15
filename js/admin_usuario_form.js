@@ -1,5 +1,12 @@
+const API_USUARIOS = "http://localhost:8080/pistaPadel/users";
+const API_AUTH = "http://localhost:8080/pistaPadel/auth";
+
+console.log("admin_usuario_form.js cargado correctamente");
+
+let usuarioOriginal = null;
+
 document.addEventListener("DOMContentLoaded", async () => {
-    const token = localStorage.getItem('token');
+    const token = localStorage.getItem("token");
     const formulario = document.querySelector(".formulario-admin-pista");
 
     const parametrosURL = new URLSearchParams(window.location.search);
@@ -8,7 +15,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     const inputContrasena = document.getElementById("contrasena");
     const inputConfirmar = document.getElementById("confirmarContrasena");
 
-    // MODO EDICIÓN - PATCH
+    // MODO EDICIÓN
     if (idUsuario) {
         document.querySelector("h1").textContent = "Modificar usuario";
         document.querySelector(".descripcion-admin-pista").textContent = "Actualiza los datos del usuario seleccionado.";
@@ -18,39 +25,41 @@ document.addEventListener("DOMContentLoaded", async () => {
         inputConfirmar.removeAttribute("required");
 
         try {
-            const respuesta = await fetch(`${API}/pistaPadel/users/${idUsuario}`, {
-                method: 'GET',
+            const respuesta = await fetch(`${API_USUARIOS}/${idUsuario}`, {
+                method: "GET",
                 headers: {
-                    'Accept': 'application/json',
-                    'Authorization': 'Basic ' + token
+                    "Accept": "application/json",
+                    "Authorization": "Basic " + token
                 }
             });
-            
+
             if (respuesta.ok) {
                 const usuario = await respuesta.json();
+                usuarioOriginal = usuario;
 
-                // Se rellena el formulario con el usuario que se quiere modificar
+                console.log("Usuario cargado:", usuarioOriginal);
+
                 document.getElementById("nombre").value = usuario.nombre;
                 document.getElementById("apellidos").value = usuario.apellidos;
                 document.getElementById("email").value = usuario.email;
                 document.getElementById("telefono").value = usuario.telefono;
-                
-                // Si tienes rol.nombre o rol.id, ajusta aquí. Suponemos que devuelve algo como "ADMIN" en su propiedad 'nombre'.
-                // Si la base de datos devuelve directamente la enumeración/nombre, ajústalo según el JSON que devuelve.
+
                 if (usuario.rol) {
-                     document.getElementById("rol").value = usuario.rol.nombreRol || usuario.rol; 
+                    document.getElementById("rol").value = usuario.rol.nombreRol;
                 }
-                
+
                 document.getElementById("estado").value = usuario.activo.toString();
+
             } else {
                 alert("Error al cargar los datos del usuario.");
             }
+
         } catch (error) {
-            console.error("Error al cargar el usuario: ", error);
+            console.error("Error al cargar el usuario:", error);
         }
     }
 
-    // MODO CREACIÓN / GUARDAR CAMBIOS
+    // CREAR / GUARDAR CAMBIOS
     formulario.addEventListener("submit", async (event) => {
         event.preventDefault();
 
@@ -61,49 +70,68 @@ document.addEventListener("DOMContentLoaded", async () => {
         const confirmarContrasena = inputConfirmar.value;
         const telefono = document.getElementById("telefono").value.trim();
         const rolSeleccionado = document.getElementById("rol").value;
-        const activa = document.getElementById("estado").value === "true";
+        const activo = document.getElementById("estado").value === "true";
+
+        if (!nombre || !apellidos || !email || !telefono || !rolSeleccionado) {
+            alert("Por favor, completa todos los campos obligatorios.");
+            return;
+        }
+
+        if (!idUsuario && !contrasena) {
+            alert("La contraseña es obligatoria al crear un usuario.");
+            return;
+        }
 
         if (contrasena && contrasena !== confirmarContrasena) {
             alert("Las contraseñas no coinciden. Por favor, revísalas.");
             return;
         }
 
-        // Construimos el objeto EXACTAMENTE como lo espera la entidad Java
         const usuarioData = {
             nombre: nombre,
             apellidos: apellidos,
             email: email,
             telefono: telefono,
-            activo: activa
+            activo: activo,
+            rol: {
+                idRol: rolSeleccionado === "ADMIN" ? 2 : 1
+            }
         };
 
-        // En Java el campo se llama "password", por lo que la clave del JSON debe ser esa
-        if (contrasena) {
+        // Si estamos creando usuario, mandamos la contraseña escrita
+        if (!idUsuario) {
             usuarioData.password = contrasena;
         }
 
-        // --- GESTIÓN DEL ROL ---
-        // Como 'Rol' es @ManyToOne, enviamos un objeto.
-        // Si tu backend falla porque espera un ID, cambia esto a: { id: (rolSeleccionado === "ADMIN" ? 1 : 2) } 
-        // asumiendo los IDs de tu tabla Rol.
-        usuarioData.rol = { nombre: rolSeleccionado }; 
+        // Si estamos modificando usuario
+        if (idUsuario) {
+            // Si se escribe una contraseña nueva, usamos esa
+            // Si no, mantenemos la contraseña original
+            usuarioData.password = contrasena ? contrasena : usuarioOriginal.password;
 
-        const url = idUsuario ? `${API}/users/${idUsuario}` : `${API}/auth/register`;
-        const metodo = idUsuario ? 'PATCH' : 'POST';
+            // El backend necesita fechaRegistro porque en actualizaUsuario() la vuelve a guardar
+            usuarioData.fechaRegistro = usuarioOriginal.fechaRegistro;
+        }
+
+        console.log("Datos enviados al backend:", usuarioData);
+
+        const url = idUsuario ? `${API_USUARIOS}/${idUsuario}` : `${API_AUTH}/register`;
+        const metodo = idUsuario ? "PATCH" : "POST";
 
         try {
             const respuesta = await fetch(url, {
                 method: metodo,
                 headers: {
-                    'Content-Type': 'application/json',
-                    'Accept': 'application/json',
-                    'Authorization': 'Basic ' + token
+                    "Content-Type": "application/json",
+                    "Accept": "application/json",
+                    "Authorization": "Basic " + token
                 },
                 body: JSON.stringify(usuarioData)
             });
 
             if (!respuesta.ok) {
-                // Si el backend lanza error de validación, lo capturamos
+                const errorTexto = await respuesta.text();
+                console.error("Error del backend:", respuesta.status, errorTexto);
                 throw new Error("Error al procesar la petición con el servidor");
             }
 
@@ -112,7 +140,7 @@ document.addEventListener("DOMContentLoaded", async () => {
             window.location.href = "admin_usuarios.html";
 
         } catch (error) {
-            console.error(error);
+            console.error("Error al guardar usuario:", error);
             alert("No se pudo guardar el usuario. Revisa la consola para más detalles.");
         }
     });

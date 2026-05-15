@@ -52,8 +52,8 @@ public class ConfiguracionSeguridad {
         http.sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
 
         http.authorizeHttpRequests(auth -> auth
-                .requestMatchers("/pistaPadel/auth/register").permitAll()
-                .requestMatchers("/pistaPadel/auth/login").permitAll()
+                .requestMatchers(org.springframework.http.HttpMethod.POST, "/pistaPadel/auth/register").permitAll()
+                .requestMatchers(org.springframework.http.HttpMethod.POST, "/pistaPadel/auth/login").permitAll()
                 .requestMatchers("/h2-console/**").permitAll()
                 .requestMatchers(org.springframework.http.HttpMethod.GET, "/pistaPadel/courts").permitAll()
                 .anyRequest().authenticated()
