@@ -2044,11 +2044,55 @@ Otra mejora futura sería desplegar la aplicación en un entorno real, de forma 
 
 ---
 
-## 16. Conclusiones
+## 14. Conclusiones
 
-### 16.1 Resultados obtenidos
-### 16.2 Aprendizajes técnicos
-### 16.3 Valoración del trabajo en equipo
+El desarrollo de **PistasPadel — Arena Padel Club** nos ha permitido crear una aplicación web completa, conectando una parte visual hecha con HTML, CSS y JavaScript con un backend desarrollado en Spring Boot.
+
+### 14.1 Resultados obtenidos
+
+Como resultado final, hemos conseguido una aplicación funcional que permite:
+
+- Registrar usuarios e iniciar sesión.
+- Diferenciar entre usuarios normales y administradores.
+- Consultar pistas disponibles.
+- Ver la disponibilidad de una pista.
+- Crear, modificar y cancelar reservas.
+- Gestionar usuarios, pistas y reservas desde el perfil administrador.
+- Conectar el frontend con el backend mediante JavaScript.
+- Guardar los datos en una base de datos H2 inicializada con datos de prueba.
+
+En conjunto, la aplicación cumple con el objetivo principal de la práctica: simular el funcionamiento de una página web real para la reserva de pistas de pádel.
+
+### 14.2 Aprendizajes técnicos
+
+Durante el desarrollo del proyecto hemos aprendido y reforzado varios conceptos importantes:
+
+- Crear un backend con Spring Boot.
+- Organizar el código en entidades, repositorios, servicios y controladores.
+- Crear endpoints REST para conectar frontend y backend.
+- Usar una base de datos H2 con datos iniciales.
+- Aplicar seguridad con usuarios, roles y autenticación.
+- Usar JavaScript para enviar peticiones `fetch`.
+- Trabajar con formularios dinámicos.
+- Gestionar errores y comprobar el funcionamiento de la aplicación paso a paso.
+
+Una de las partes más importantes ha sido entender cómo se conectan todas las piezas: el usuario interactúa con la web, JavaScript manda la petición, el backend procesa los datos y la base de datos guarda la información.
+
+### 14.3 Valoración del trabajo en equipo
+
+El trabajo en equipo ha sido clave para poder completar la práctica. Dividir el proyecto por entregas nos ayudó a organizarnos mejor y a avanzar poco a poco.
+
+Algunos aspectos positivos del trabajo en grupo han sido:
+
+- Repartir las tareas.
+- Trabajar primero backend y frontend por separado para no mezclar errores.
+- Revisar entre todos los problemas que iban apareciendo.
+- Usar GitHub para guardar cambios y juntar el trabajo final.
+- Aprender a resolver conflictos y coordinar mejor las versiones del proyecto.
+
+Aunque durante el desarrollo surgieron problemas, especialmente en la integración entre frontend, backend y seguridad, conseguir resolverlos nos ayudó a entender mucho mejor cómo funciona una aplicación web completa.
+
+Como conclusión final, consideramos que el proyecto nos ha servido para aplicar de forma práctica los conocimientos de la asignatura y para aprender a trabajar de manera más organizada en un proyecto realista.
 
 ---
 
