@@ -1867,11 +1867,130 @@ Estas pruebas finales permitieron comprobar el funcionamiento completo de la apl
 
 ## 12. Problemas encontrados y soluciones
 
+Durante el desarrollo del proyecto surgieron distintos problemas técnicos y de organización. Estos problemas se fueron resolviendo progresivamente en cada entrega, especialmente durante la integración final entre backend, frontend y JavaScript.
+
+
 ### 12.1 Seguridad y autenticación
+
+Uno de los principales problemas encontrados fue la integración de la seguridad del backend con el frontend. En el backend se utilizaba **Spring Security**, pero al conectar las páginas HTML con JavaScript surgieron dificultades para mantener la sesión y enviar correctamente las credenciales desde el navegador.
+
+Al principio, la autenticación estaba más orientada a una gestión mediante sesión, pero esto complicaba la comunicación con el frontend, ya que las peticiones `fetch` necesitaban una forma clara de identificarse ante el backend.
+
+La solución aplicada fue simplificar la autenticación utilizando **Basic Auth**. De esta forma, al iniciar sesión, el frontend genera un token a partir del email y la contraseña del usuario y lo guarda en `localStorage`.
+
+Después, en cada petición protegida, JavaScript envía ese token en la cabecera:
+
+```text
+Authorization: Basic token
+```
+
+Esto permitió que el backend pudiera identificar al usuario autenticado y aplicar las restricciones según su rol.
+
+| Problema | Solución aplicada |
+|---|---|
+| Dificultad para mantener sesión entre frontend y backend | Uso de Basic Auth |
+| Peticiones protegidas rechazadas | Envío del token en la cabecera `Authorization` |
+| Diferenciar usuario normal y administrador | Uso de roles `USER` y `ADMIN` |
+| Ocultar o mostrar opciones según el rol | Gestión dinámica desde `sesion.js` |
+
 ### 12.2 CORS e integración con JavaScript
+
+Otro problema importante apareció al conectar el frontend con el backend mediante JavaScript. Como las páginas HTML hacían peticiones al servidor Spring Boot, el navegador podía bloquear algunas peticiones por la política de **CORS**.
+
+Este problema se solucionó configurando CORS en el backend para permitir las peticiones desde el frontend. Además, se revisaron las cabeceras enviadas desde JavaScript para que las peticiones incluyeran correctamente el tipo de contenido y la autorización.
+
+En las peticiones `fetch` se añadieron cabeceras como:
+
+```javascript
+headers: {
+    "Content-Type": "application/json",
+    "Accept": "application/json",
+    "Authorization": "Basic " + token
+}
+```
+
+También fue necesario adaptar cada formulario para que no recargara la página automáticamente, utilizando:
+
+```javascript
+event.preventDefault();
+```
+
+De esta forma, JavaScript podía controlar el envío de datos al backend y gestionar la respuesta recibida.
+
+| Problema | Solución aplicada |
+|---|---|
+| Bloqueo de peticiones desde el navegador | Configuración de CORS en el backend |
+| Formularios que recargaban la página | Uso de `event.preventDefault()` |
+| Datos enviados en formato incorrecto | Uso de `JSON.stringify()` |
+| Respuestas no interpretadas correctamente | Uso de `await respuesta.json()` o `await respuesta.text()` |
+
 ### 12.3 Persistencia y carga de datos
+
+Durante la parte de persistencia también surgieron problemas relacionados con la base de datos H2 y la carga inicial de datos.
+
+Fue necesario configurar correctamente `application.properties` para que Hibernate creara las tablas y después se ejecutara el archivo `data.sql`. También se tuvo que revisar el orden de inserción de los datos, ya que los usuarios dependen de los roles mediante una clave ajena.
+
+Por eso, en `data.sql` primero se insertan los roles:
+
+```sql
+INSERT INTO rol (nombre_rol, descripcion)
+VALUES ('USER', 'Usuario estándar del sistema');
+
+INSERT INTO rol (nombre_rol, descripcion)
+VALUES ('ADMIN', 'Administrador con control total');
+```
+
+Y después se insertan los usuarios, pistas y reservas.
+
+También se utilizó la consola de H2 para comprobar visualmente que los datos se estaban guardando correctamente:
+
+```text
+http://localhost:8080/h2-console
+```
+
+| Problema | Solución aplicada |
+|---|---|
+| Datos iniciales que no se cargaban correctamente | Revisión de `data.sql` |
+| Errores por claves ajenas | Insertar primero roles y después usuarios |
+| Dudas sobre si se usaba base en memoria o en archivo | Configuración de H2 en `application.properties` |
+| Comprobación de datos guardados | Uso de la consola H2 |
+
 ### 12.4 Organización de páginas HTML
+
+En la primera versión del frontend existían muchas páginas duplicadas, separando vistas de usuario y vistas de administrador. Por ejemplo, había páginas distintas para usuario logueado, administrador, reservas de usuario, reservas de administrador o detalles según el tipo de rol.
+
+Esto hacía que el proyecto fuera más difícil de mantener, ya que cualquier cambio visual o funcional debía repetirse en varias páginas.
+
+La solución fue ir unificando páginas durante la fase de JavaScript. En lugar de tener varias versiones de una misma vista, se utilizó JavaScript para adaptar el contenido según el rol del usuario autenticado.
+
+Por ejemplo:
+
+| Antes | Después |
+|---|---|
+| `index.html`, `index_log_user.html`, `index_log_admin.html` | Una página principal gestionada con `sesion.js` |
+| Páginas separadas de reservas para usuario y administrador | `reservas.html` adaptada según el rol |
+| Vistas separadas de detalle de reserva | `reserva_detalle.html` reutilizada |
+| Listado de pistas distinto para usuario y administrador | `pistas.html` con botones dinámicos según rol |
+
+Esta solución permitió reducir duplicidad y hacer que el frontend fuera más fácil de mantener.
+
 ### 12.5 Control de versiones con GitHub
+
+El trabajo en equipo también generó algunos problemas relacionados con Git y GitHub. Al principio, se trabajó en repositorios separados para no mezclar el backend y el frontend antes de que ambas partes estuvieran preparadas.
+
+Más adelante, en la última entrega, se integró todo en un único repositorio final. Durante este proceso aparecieron conflictos al hacer `pull`, `push` o `rebase`, especialmente cuando varios miembros habían modificado los mismos archivos.
+
+Cuando aparecían conflictos, se revisaban manualmente los archivos afectados, se elegía la versión correcta del código y después se marcaban como resueltos con `git add`.
+
+| Problema | Solución aplicada |
+|---|---|
+| Cambios simultáneos en los mismos archivos | Resolución manual de conflictos |
+| Mezcla de backend y frontend | Trabajo inicial en repositorios separados |
+| Necesidad de integrar todo al final | Creación de un repositorio final común |
+| Conflictos durante `pull --rebase` | Revisión de archivos, `git add` y `git rebase --continue` |
+| Control de versiones del equipo | Uso de commits y pushes frecuentes |
+
+El uso de GitHub permitió mantener un historial del proyecto, coordinar el trabajo del equipo y conservar una versión final integrada con backend, frontend, JavaScript, estilos e imágenes.
 
 ---
 
