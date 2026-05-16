@@ -528,7 +528,15 @@ Esta carpeta es fundamental en la última fase del proyecto, ya que permite que 
 
 ### 4.5 Carpeta img
 
+La carpeta `img` contiene las imágenes utilizadas en la interfaz de la aplicación, como el logotipo del club y otros recursos visuales.
+
 ### 4.6 Hoja de estilos CSS
+
+El archivo `styles.css` contiene los estilos generales de la aplicación.
+
+En esta hoja se definen los colores, tipografías, botones, formularios, cabecera, pie de página, listados, tarjetas, secciones y diseño responsive. Gracias a este archivo, todas las páginas mantienen una estética común y coherente.
+
+El uso de una única hoja de estilos principal permite reutilizar clases CSS en distintas páginas y evita repetir estilos en cada archivo HTML.
 
 ---
 
