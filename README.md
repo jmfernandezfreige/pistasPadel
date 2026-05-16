@@ -327,11 +327,207 @@ Para organizar el trabajo se ha utilizado **Git** como sistema de control de ver
 
 ## 4. Estructura del proyecto
 
+El proyecto está organizado separando las distintas partes de la aplicación: el backend, las páginas HTML, los archivos JavaScript, las imágenes y la hoja de estilos. Esta organización facilita el mantenimiento del código y permite diferenciar claramente la parte visual, la lógica del frontend y la lógica del servidor.
+
+
 ### 4.1 Organización general del repositorio
-### 4.2 Carpeta backend
+La estructura general del repositorio es la siguiente:
+
+```text
+pistasPadel/
+│
+├── backend/
+│   └── Código del backend desarrollado con Java y Spring Boot
+│
+├── js/
+│   └── Archivos JavaScript encargados de la lógica dinámica del frontend
+│
+├── img/
+│   └── Imágenes utilizadas en la interfaz de la aplicación
+│
+├── index.html
+├── login.html
+├── registro.html
+├── pistas.html
+├── pista_detalle.html
+├── reservas.html
+├── reserva_detalle.html
+├── reserva_nueva.html
+├── admin_usuarios.html
+├── admin_usuario_form.html
+├── admin_pista_form.html
+│
+├── styles.css
+└── README.md
+```
+De esta forma, el repositorio queda dividido en dos grandes bloques: por un lado, el backend, encargado de la lógica de negocio y la base de datos; y por otro lado, el frontend, formado por las páginas HTML, los estilos CSS, las imágenes y los archivos JavaScript.
+
+### 4.2 Carpeta `backend`
+
+La carpeta `backend` contiene toda la parte del servidor de la aplicación. Está desarrollada en **Java** con **Spring Boot** y se encarga de gestionar la lógica de negocio, la seguridad, la base de datos y los endpoints REST utilizados por el frontend.
+
+La estructura principal del backend es la siguiente:
+
+```text
+backend/
+│
+├── .mvn/
+│
+├── src/
+│   ├── main/
+│   │   ├── java/
+│   │   │   └── edu.comillas.icai.gitt.pat.spring.practica_final/
+│   │   │       │
+│   │   │       ├── controlador/
+│   │   │       │   ├── PistaControlador.java
+│   │   │       │   ├── ReservasControlador.java
+│   │   │       │   └── UsuarioControlador.java
+│   │   │       │
+│   │   │       ├── entidad/
+│   │   │       │   ├── Pista.java
+│   │   │       │   ├── Reserva.java
+│   │   │       │   ├── Rol.java
+│   │   │       │   └── Usuario.java
+│   │   │       │
+│   │   │       ├── repositorio/
+│   │   │       │   ├── RepoPista.java
+│   │   │       │   ├── RepoReserva.java
+│   │   │       │   ├── RepoRol.java
+│   │   │       │   └── RepoUsuario.java
+│   │   │       │
+│   │   │       ├── servicio/
+│   │   │       │   ├── ServicioPistas.java
+│   │   │       │   ├── ServicioReservas.java
+│   │   │       │   └── ServicioUsuarios.java
+│   │   │       │
+│   │   │       ├── ConfiguracionSeguridad.java
+│   │   │       ├── ControladorGlobalDeErrores.java
+│   │   │       ├── ModeloError.java
+│   │   │       ├── PracticaFinalApplication.java
+│   │   │       └── TareasProgramadas.java
+│   │   │
+│   │   └── resources/
+│   │       ├── application.properties
+│   │       └── data.sql
+│   │
+│   └── test/
+│
+└── pom.xml
+```
+
+El backend está dividido en varias capas para separar responsabilidades y mantener el código organizado.
+
+#### Controladores
+
+Los controladores son las clases que reciben las peticiones HTTP del frontend y exponen los endpoints REST de la aplicación.
+
+| Archivo | Función |
+|---|---|
+| `PistaControlador.java` | Gestiona los endpoints relacionados con pistas y disponibilidad |
+| `ReservasControlador.java` | Gestiona los endpoints relacionados con reservas |
+| `UsuarioControlador.java` | Gestiona los endpoints relacionados con usuarios y autenticación |
+
+#### Entidades
+
+Las entidades representan las tablas principales de la base de datos. Cada entidad se corresponde con un elemento importante del sistema.
+
+| Archivo | Función |
+|---|---|
+| `Usuario.java` | Representa a los usuarios registrados en la aplicación |
+| `Rol.java` | Representa los roles del sistema: `USER` y `ADMIN` |
+| `Pista.java` | Representa las pistas de pádel disponibles en el club |
+| `Reserva.java` | Representa las reservas realizadas por los usuarios |
+
+#### Repositorios
+
+Los repositorios permiten acceder a la base de datos mediante Spring Data JPA. Se encargan de realizar consultas, guardar datos, buscar registros o eliminarlos.
+
+| Archivo | Función |
+|---|---|
+| `RepoUsuario.java` | Acceso a los datos de usuarios |
+| `RepoRol.java` | Acceso a los datos de roles |
+| `RepoPista.java` | Acceso a los datos de pistas |
+| `RepoReserva.java` | Acceso a los datos de reservas |
+
+#### Servicios
+
+Los servicios contienen la lógica de negocio de la aplicación. En ellos se realizan comprobaciones como validar usuarios, comprobar disponibilidad, evitar reservas solapadas o controlar permisos.
+
+| Archivo | Función |
+|---|---|
+| `ServicioUsuarios.java` | Lógica relacionada con usuarios, registro, consulta y modificación |
+| `ServicioPistas.java` | Lógica relacionada con pistas y disponibilidad |
+| `ServicioReservas.java` | Lógica relacionada con creación, consulta, modificación y cancelación de reservas |
+
+#### Clases generales del backend
+
+Además de las capas principales, el backend incluye otras clases necesarias para la configuración y funcionamiento global de la aplicación.
+
+| Archivo | Función |
+|---|---|
+| `PracticaFinalApplication.java` | Clase principal que arranca la aplicación Spring Boot |
+| `ConfiguracionSeguridad.java` | Configura la seguridad, autenticación, autorización, CORS y Basic Auth |
+| `ControladorGlobalDeErrores.java` | Gestiona los errores globales de la aplicación |
+| `ModeloError.java` | Modelo utilizado para devolver errores de forma estructurada |
+| `TareasProgramadas.java` | Contiene tareas automáticas programadas |
+
+#### Recursos del backend
+
+La carpeta `resources` contiene archivos de configuración y datos iniciales.
+
+| Archivo | Función |
+|---|---|
+| `application.properties` | Configuración de Spring Boot, H2, JPA y otros parámetros del backend |
+| `data.sql` | Inserta datos iniciales de prueba en la base de datos |
+
+Por último, el archivo `pom.xml` contiene la configuración de Maven y las dependencias necesarias para ejecutar el backend, como Spring Boot, Spring Web, Spring Data JPA, Spring Security, H2 y las herramientas de validación.
+
 ### 4.3 Archivos HTML
+
+Los archivos HTML forman la estructura visual de la aplicación. Cada archivo representa una pantalla o vista concreta del sistema.
+
+En un primer momento se crearon varias páginas separadas para usuario y administrador. Posteriormente, con la integración de JavaScript, algunas vistas se unificaron para evitar duplicidad y mostrar contenido diferente según el rol del usuario autenticado.
+
+| Archivo HTML | Función |
+|---|---|
+| `index.html` | Página principal de la aplicación |
+| `login.html` | Formulario de inicio de sesión |
+| `registro.html` | Formulario para crear una nueva cuenta |
+| `pistas.html` | Listado general de pistas |
+| `pista_detalle.html` | Vista detallada de una pista concreta |
+| `reservas.html` | Listado de reservas del usuario o del administrador |
+| `reserva_detalle.html` | Vista de detalle de una reserva concreta |
+| `reserva_nueva.html` | Formulario para crear una nueva reserva |
+| `admin_usuarios.html` | Listado de usuarios para el administrador |
+| `admin_usuario_form.html` | Formulario para consultar o modificar usuarios |
+| `admin_pista_form.html` | Formulario para crear o modificar pistas |
+
+Gracias a estos archivos se construye toda la parte visible de la aplicación, que después se completa con estilos CSS y funcionalidad JavaScript.
+
 ### 4.4 Carpeta js
+
+La carpeta `js` contiene los archivos JavaScript que permiten conectar el frontend con el backend y hacer que las páginas sean dinámicas.
+
+Estos archivos se encargan de capturar formularios, realizar peticiones `fetch`, guardar datos de sesión, cargar información desde el backend y modificar el contenido HTML según el rol del usuario.
+
+| Archivo JavaScript | Función |
+|---|---|
+| `sesion.js` | Gestiona la cabecera según si el usuario está logueado y según su rol |
+| `login.js` | Gestiona el inicio de sesión |
+| `registro.js` | Gestiona el registro de nuevos usuarios |
+| `pistas.js` | Carga dinámicamente el listado de pistas |
+| `pista_detalle.js` | Muestra la información de una pista concreta |
+| `reservas.js` | Carga las reservas del usuario o las reservas globales del administrador |
+| `reserva_detalle.js` | Gestiona el detalle, modificación o cancelación de una reserva |
+| `reserva_nueva.js` | Carga pistas y horarios disponibles, y permite crear una nueva reserva |
+| `admin_usuarios.js` | Carga y muestra el listado de usuarios para el administrador |
+| `admin_usuario_form.js` | Gestiona la modificación de datos de usuarios |
+| `admin_pista_form.js` | Gestiona la creación y modificación de pistas |
+
+Esta carpeta es fundamental en la última fase del proyecto, ya que permite que el frontend deje de ser estático y pase a trabajar con datos reales obtenidos del backend.
+
 ### 4.5 Carpeta img
+
 ### 4.6 Hoja de estilos CSS
 
 ---
