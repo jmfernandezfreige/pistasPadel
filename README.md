@@ -1994,12 +1994,53 @@ El uso de GitHub permitió mantener un historial del proyecto, coordinar el trab
 
 ---
 
-## 15. Mejoras futuras
+## 13. Mejoras futuras
 
-### 15.1 Mejoras funcionales
-### 15.2 Mejoras visuales
-### 15.3 Mejoras de seguridad
-### 15.4 Despliegue de la aplicación
+Aunque la aplicación cumple con los objetivos principales de la práctica, existen varias mejoras que podrían implementarse en el futuro para hacer el proyecto más completo, seguro y cercano a una aplicación real.
+
+### 13.1 Mejoras funcionales
+
+A nivel funcional, se podrían añadir nuevas características para mejorar la experiencia del usuario y ampliar las posibilidades de gestión del club.
+
+| Mejora | Descripción |
+|---|---|
+| Calendario visual de reservas | Mostrar las reservas en un calendario semanal o mensual para que sea más fácil consultar la disponibilidad |
+| Filtros avanzados | Permitir filtrar reservas por fecha, pista, usuario, estado o rango horario |
+| Duración variable de reservas | Permitir al usuario elegir reservas de 60, 90 o 120 minutos |
+| Confirmación por correo electrónico | Enviar un email al usuario cuando cree, modifique o cancele una reserva |
+| Recuperación de contraseña | Añadir una funcionalidad para restablecer la contraseña en caso de olvido |
+| Historial de reservas | Diferenciar entre reservas futuras, pasadas y canceladas |
+| Panel de estadísticas | Mostrar al administrador datos como número de reservas, pistas más utilizadas o usuarios más activos |
+| Mejora de disponibilidad | Mostrar de forma más visual qué horas están libres y cuáles ocupadas |
+
+### 13.2 Mejoras visuales
+
+En cuanto al diseño, la aplicación podría seguir mejorándose para ofrecer una interfaz más profesional y cómoda de usar.
+
+| Mejora | Descripción |
+|---|---|
+| Diseño responsive más avanzado | Adaptar mejor todas las páginas a móviles y tablets |
+| Mensajes visuales personalizados | Sustituir algunos `alert()` por mensajes integrados en la propia interfaz |
+| Indicadores de carga | Mostrar animaciones o mensajes mientras se cargan pistas, reservas o usuarios |
+| Mejoras en formularios | Añadir validaciones visuales en tiempo real |
+| Confirmaciones visuales | Mostrar mensajes más claros después de crear, modificar o cancelar elementos |
+
+### 13.3 Mejoras de seguridad
+
+La seguridad es una de las partes que más podría mejorarse si la aplicación se llevara a un entorno real.
+
+| Mejora | Descripción |
+|---|---|
+| Cifrado de contraseñas | Sustituir las contraseñas en texto plano por contraseñas cifradas |
+| Mejor gestión de autenticación | Sustituir Basic Auth por un sistema mejor|
+| Protección del almacenamiento del token | Evitar guardar credenciales sensibles directamente en `localStorage` |
+| Validaciones adicionales | Añadir más validaciones tanto en frontend como en backend |
+| Control más estricto de permisos | Revisar todas las rutas protegidas y comprobar los accesos por rol |
+| Gestión de errores de seguridad | Personalizar las respuestas ante errores `401` y `403` |
+
+### 13.4 Despliegue de la aplicación
+
+Otra mejora futura sería desplegar la aplicación en un entorno real, de forma que pudiera accederse a ella desde internet sin necesidad de ejecutarla localmente.
 
 ---
 
