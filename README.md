@@ -48,7 +48,7 @@ A continuación, se explica el proyecto de forma estructurada, comenzando por un
 >
 >| ID | Usuario | Pista | Fecha | Hora inicio | Hora fin | Duración | Estado |
 >|---|---|---|---|---|---|---|---|
->| 1 | Isabel Alonso Casas | Pista Central | 2026-03-20 | 10:00 | 11:30 | 90 min | Activa |
+>| 1 | Isabel Alonso Casas | Pista Central | 2026-03-20 | 10:00 | 11:00 | 60 min | Activa |
 >| 2 | Isabel Alonso Casas | Pista 2 | 2026-03-22 | 18:00 | 19:00 | 60 min | Cancelada |
 
 > [!IMPORTANT]
