@@ -1152,16 +1152,476 @@ Si se accede desde el botón de crear, el formulario aparece vacío. Si se acced
 
 <img width="1184" height="698" alt="image" src="https://github.com/user-attachments/assets/c817f396-f2e6-48f2-aaf8-a620e863a0b2" />
 
+---
 
 ## 8. JavaScript e integración con el backend
 
+La última fase del proyecto consistió en integrar el frontend con el backend mediante **JavaScript**. Hasta ese momento, las páginas HTML y CSS eran principalmente estáticas, por lo que fue necesario añadir lógica para enviar formularios, consultar datos reales del backend y modificar el contenido de las páginas de forma dinámica.
+
+La comunicación se realiza mediante peticiones `fetch` a los endpoints REST del backend. Además, para acceder a las funcionalidades protegidas, se utiliza autenticación mediante **Basic Auth**, guardando el token en `localStorage`.
+
+Los archivos JavaScript principales del proyecto son:
+
+| Archivo JavaScript | Función principal |
+|---|---|
+| `sesion.js` | Gestiona la cabecera, la sesión y el rol del usuario |
+| `login.js` | Gestiona el inicio de sesión |
+| `registro.js` | Gestiona el registro de nuevos usuarios |
+| `pistas.js` | Carga dinámicamente el listado de pistas |
+| `pista_detalle.js` | Muestra el detalle de una pista y sus horarios disponibles |
+| `reserva_nueva.js` | Permite crear una nueva reserva |
+| `reservas.js` | Carga las reservas del usuario o del administrador |
+| `reserva_detalle.js` | Permite consultar, modificar o cancelar una reserva concreta |
+| `admin_usuarios.js` | Carga y gestiona el listado de usuarios para administrador |
+| `admin_usuario_form.js` | Permite crear o modificar usuarios desde administración |
+| `admin_pista_form.js` | Permite crear o modificar pistas desde administración |
+
 ### 8.1 Registro de usuarios
+
+El registro de usuarios se gestiona desde el archivo:
+
+```text
+js/registro.js
+```
+
+Este archivo recoge los datos introducidos en el formulario de `registro.html`, comprueba que las contraseñas coincidan y envía la información al backend mediante una petición `POST`.
+
+El flujo del registro es el siguiente:
+
+```text
+1. El usuario rellena el formulario de registro.
+2. JavaScript captura el evento submit del formulario.
+3. Se comprueba que las dos contraseñas coincidan.
+4. Si coinciden, se crea un objeto con los datos del usuario.
+5. Se envía una petición POST al backend.
+6. Si el registro es correcto, el usuario es redirigido a login.html.
+7. Si ocurre un error, se muestra un aviso en el formulario.
+```
+
+El endpoint utilizado es:
+
+| Método | Endpoint | Función |
+|---|---|---|
+| `POST` | `/pistaPadel/auth/register` | Registrar un nuevo usuario |
+
+Los datos enviados al backend incluyen:
+
+| Campo | Descripción |
+|---|---|
+| `nombre` | Nombre del usuario |
+| `apellidos` | Apellidos del usuario |
+| `email` | Correo electrónico |
+| `password` | Contraseña |
+| `telefono` | Teléfono |
+| `rol` | Rol inicial del usuario |
+| `activo` | Estado del usuario |
+
+En el registro público, los usuarios nuevos se crean como usuarios estándar, es decir, con rol `USER`.
+
 ### 8.2 Inicio de sesión
+
+El inicio de sesión se gestiona desde el archivo:
+
+```text
+js/login.js
+```
+
+Este archivo recoge el email y la contraseña introducidos en el formulario de `login.html`. Después, genera un token en formato Basic Auth y lo utiliza para comprobar si las credenciales son correctas.
+
+El flujo del login es el siguiente:
+
+```text
+1. El usuario introduce email y contraseña.
+2. JavaScript captura el formulario de login.
+3. Se construye la cadena email:contraseña.
+4. Esa cadena se codifica en Base64 mediante btoa().
+5. Se envía una petición al backend con la cabecera Authorization.
+6. Si la respuesta es correcta, el token se guarda en localStorage.
+7. El usuario es redirigido a index.html.
+8. Si las credenciales son incorrectas, se muestra un aviso.
+```
+
+El endpoint utilizado para comprobar el usuario autenticado es:
+
+| Método | Endpoint | Función |
+|---|---|---|
+| `GET` | `/pistaPadel/auth/me` | Obtener el usuario autenticado |
+
+De esta manera, el backend puede identificar al usuario en las siguientes peticiones protegidas.
+
 ### 8.3 Gestión de sesión y roles
+
+La gestión de sesión se realiza desde el archivo:
+
+```text
+js/sesion.js
+```
+
+Este archivo se carga en las páginas principales del frontend y se encarga de modificar la cabecera según el estado de la sesión.
+
+El flujo de sesión es el siguiente:
+
+```text
+1. Al cargar la página, se comprueba si existe un token en localStorage.
+2. Si no existe token, se muestra la cabecera con "Registrarse" e "Iniciar sesión".
+3. Si existe token, se consulta el endpoint /pistaPadel/auth/me.
+4. El backend devuelve los datos del usuario autenticado.
+5. JavaScript obtiene el rol del usuario.
+6. Si el rol es USER, se muestra el menú de usuario.
+7. Si el rol es ADMIN, se muestra el menú de administrador.
+8. El rol se guarda también en localStorage para usarlo en otras páginas.
+```
+
+La interfaz cambia según el tipo de usuario:
+
+| Estado | Cabecera mostrada |
+|---|---|
+| Usuario no autenticado | Botones de registro e inicio de sesión |
+| Usuario `USER` | Menú con sus datos, sus reservas y nueva reserva |
+| Usuario `ADMIN` | Menú con gestión de usuarios, pistas y reservas |
+
+Además, `sesion.js` también gestiona el cierre de sesión. Al cerrar sesión, se eliminan del navegador el token y el rol almacenados.
+
+Endpoints utilizados:
+
+| Método | Endpoint | Función |
+|---|---|---|
+| `GET` | `/pistaPadel/auth/me` | Obtener el usuario autenticado |
+| `POST` | `/pistaPadel/auth/logout` | Cerrar sesión |
+
 ### 8.4 Carga dinámica de pistas
-### 8.5 Creación de reservas
-### 8.6 Funcionalidades de administrador
-### 8.7 Uso de fetch y Basic Auth
+
+La carga dinámica de pistas se gestiona principalmente desde el archivo:
+
+```text
+js/pistas.js
+```
+
+Este archivo realiza una petición al backend para obtener el listado de pistas y después genera el contenido HTML de forma dinámica.
+
+El funcionamiento es el siguiente:
+
+```text
+1. Al cargar la página pistas.html, se ejecuta cargarPistas().
+2. JavaScript realiza una petición GET al backend.
+3. El backend devuelve un JSON con las pistas.
+4. JavaScript recorre la lista de pistas con forEach.
+5. Por cada pista se genera una fila en el HTML.
+6. Según el rol del usuario, se muestran botones diferentes.
+```
+
+El endpoint utilizado es:
+
+| Método | Endpoint | Función |
+|---|---|---|
+| `GET` | `/pistaPadel/courts` | Obtener el listado de pistas |
+
+La página se adapta de la siguiente manera:
+
+| Rol | Acciones en la página de pistas |
+|---|---|
+| Usuario no autenticado | Ver detalles e iniciar sesión para reservar |
+| `USER` | Ver detalles y reservar |
+| `ADMIN` | Modificar o eliminar pistas |
+
+De esta forma, una misma página puede servir para distintos tipos de usuario, evitando tener archivos HTML repetidos.
+
+### 8.5 Detalle de pista y disponibilidad
+
+El detalle de una pista se gestiona desde el archivo:
+
+```text
+js/pista_detalle.js
+```
+
+Este archivo obtiene el identificador de la pista desde la URL, consulta sus datos en el backend y muestra la información correspondiente en la página `pista_detalle.html`.
+
+Además, también consulta la disponibilidad de la pista para mostrar las franjas horarias disponibles.
+
+El flujo del detalle de pista es el siguiente:
+
+```text
+1. El usuario accede a pista_detalle.html?id=ID.
+2. JavaScript obtiene el id de la pista desde la URL.
+3. Se realiza un GET al backend para obtener los datos de esa pista.
+4. Se pintan en pantalla el nombre, precio y datos principales.
+5. Se consulta la disponibilidad de la pista.
+6. Se generan las franjas horarias.
+7. Si una franja está disponible, se permite acceder a la reserva.
+8. Si el usuario no está logueado, se le redirige al login.
+```
+
+Endpoints utilizados:
+
+| Método | Endpoint | Función |
+|---|---|---|
+| `GET` | `/pistaPadel/courts/{courtId}` | Obtener detalle de una pista |
+| `GET` | `/pistaPadel/availability?date=YYYY-MM-DD` | Consultar disponibilidad general |
+| `GET` | `/pistaPadel/courts/{courtId}/availability?date=YYYY-MM-DD` | Consultar disponibilidad de una pista concreta |
+
+
+### 8.6 Creación de reservas
+
+La creación de nuevas reservas se gestiona desde el archivo:
+
+```text
+js/reserva_nueva.js
+```
+
+Este archivo conecta el formulario de nueva reserva con el backend. Permite cargar las pistas activas, consultar los horarios disponibles y enviar la reserva seleccionada.
+
+El flujo para crear una reserva es el siguiente:
+
+```text
+1. El usuario accede a reserva_nueva.html.
+2. JavaScript carga las pistas activas desde el backend.
+3. El usuario selecciona una pista.
+4. El usuario selecciona una fecha.
+5. JavaScript consulta la disponibilidad de esa pista en esa fecha.
+6. El backend devuelve los horarios disponibles.
+7. JavaScript pinta los horarios en pantalla.
+8. El usuario selecciona una franja horaria.
+9. Al confirmar, JavaScript crea el objeto reserva.
+10. Se envía un POST al backend.
+11. El backend comprueba que no haya solapamientos.
+12. Si todo es correcto, se guarda la reserva.
+13. El usuario es redirigido a la página de reservas.
+```
+
+Endpoints utilizados:
+
+| Método | Endpoint | Función |
+|---|---|---|
+| `GET` | `/pistaPadel/courts?active=true` | Obtener pistas activas |
+| `GET` | `/pistaPadel/courts/{courtId}/availability?date=YYYY-MM-DD` | Consultar disponibilidad |
+| `POST` | `/pistaPadel/reservations` | Crear una nueva reserva |
+
+El objeto enviado al backend contiene:
+
+| Campo | Descripción |
+|---|---|
+| `pista.idPista` | Identificador de la pista seleccionada |
+| `fechaReserva` | Fecha elegida por el usuario |
+| `horaInicio` | Hora seleccionada |
+| `duracionMinutos` | Duración de la reserva |
+
+El usuario no introduce manualmente su identificador, ya que el backend obtiene el usuario a partir de la autenticación.
+
+### 8.7 Consulta y gestión de reservas
+
+La consulta del listado de reservas se gestiona desde el archivo:
+
+```text
+js/reservas.js
+```
+
+Este archivo se utiliza para cargar las reservas del usuario autenticado o, si el usuario tiene rol `ADMIN`, cargar todas las reservas del sistema.
+
+El flujo del listado de reservas es el siguiente:
+
+```text
+1. Al cargar reservas.html, JavaScript comprueba el rol del usuario.
+2. Si el rol es USER, se consulta el endpoint de reservas propias.
+3. Si el rol es ADMIN, se consulta el endpoint de reservas globales.
+4. El backend devuelve un JSON con las reservas.
+5. JavaScript pinta las reservas en el HTML.
+6. Si el usuario es ADMIN, se muestran acciones adicionales.
+7. También se permite buscar o filtrar visualmente las reservas cargadas.
+```
+
+Endpoints utilizados:
+
+| Método | Endpoint | Función |
+|---|---|---|
+| `GET` | `/pistaPadel/reservations` | Obtener reservas del usuario autenticado |
+| `GET` | `/pistaPadel/admin/reservations` | Obtener todas las reservas del sistema |
+| `DELETE` | `/pistaPadel/reservations/{reservationId}` | Cancelar una reserva |
+
+La vista cambia según el rol:
+
+| Rol | Vista de reservas |
+|---|---|
+| `USER` | Ve sus propias reservas |
+| `ADMIN` | Ve las reservas globales del sistema |
+
+### 8.8 Detalle, modificación y cancelación de reservas
+
+El detalle de una reserva concreta se gestiona desde el archivo:
+
+```text
+js/reserva_detalle.js
+```
+
+Este archivo permite cargar una reserva específica, mostrar sus datos en un formulario y modificarla o cancelarla.
+
+El flujo del detalle de reserva es el siguiente:
+
+```text
+1. El usuario accede a reserva_detalle.html?id=ID.
+2. JavaScript obtiene el id de la reserva desde la URL.
+3. Se cargan las pistas activas para rellenar el selector.
+4. Se consulta la reserva concreta en el backend.
+5. Se rellenan los campos del formulario con los datos actuales.
+6. Si se cambia la pista o la fecha, se recargan los horarios disponibles.
+7. Si se guarda el formulario, se envía un PATCH al backend.
+8. Si se cancela la reserva, se envía un DELETE al backend.
+```
+
+Endpoints utilizados:
+
+| Método | Endpoint | Función |
+|---|---|---|
+| `GET` | `/pistaPadel/reservations/{reservationId}` | Obtener una reserva concreta |
+| `GET` | `/pistaPadel/courts?active=true` | Obtener pistas activas |
+| `GET` | `/pistaPadel/courts/{courtId}/availability?date=YYYY-MM-DD` | Consultar disponibilidad |
+| `PATCH` | `/pistaPadel/reservations/{reservationId}` | Modificar una reserva |
+| `DELETE` | `/pistaPadel/reservations/{reservationId}` | Cancelar una reserva |
+
+Este archivo permite reutilizar una misma vista para consultar o modificar reservas, adaptando los textos según el rol del usuario.
+
+
+### 8.9 Funcionalidades de administrador
+
+El administrador dispone de funcionalidades adicionales que también se gestionan mediante JavaScript.
+
+Los principales archivos relacionados con administración son:
+
+| Archivo | Función |
+|---|---|
+| `admin_usuarios.js` | Carga y muestra el listado de usuarios |
+| `admin_usuario_form.js` | Permite crear o modificar usuarios |
+| `admin_pista_form.js` | Permite crear o modificar pistas |
+| `pistas.js` | Muestra botones de modificar y eliminar pistas cuando el rol es `ADMIN` |
+| `reservas.js` | Permite consultar reservas globales desde la vista de administrador |
+| `reserva_detalle.js` | Permite consultar, modificar o cancelar reservas concretas |
+
+
+#### Gestión de usuarios
+
+El listado de usuarios se gestiona desde:
+
+```text
+js/admin_usuarios.js
+```
+
+Este archivo consulta los usuarios activos del backend y los muestra en la página de administración.
+
+Endpoint utilizado:
+
+| Método | Endpoint | Función |
+|---|---|---|
+| `GET` | `/pistaPadel/users?activo=true` | Obtener usuarios activos |
+
+Además, permite realizar una baja lógica de usuarios modificando su estado a inactivo.
+
+| Método | Endpoint | Función |
+|---|---|---|
+| `PATCH` | `/pistaPadel/users/{userId}` | Modificar usuario o marcarlo como inactivo |
+
+
+#### Formulario de usuario
+
+La creación o modificación de usuarios desde administración se gestiona desde:
+
+```text
+js/admin_usuario_form.js
+```
+
+Este archivo funciona en dos modos:
+
+| Situación | Funcionamiento |
+|---|---|
+| Sin id en la URL | Crea un nuevo usuario |
+| Con id en la URL | Carga los datos del usuario y permite modificarlos |
+
+Endpoints utilizados:
+
+| Método | Endpoint | Función |
+|---|---|---|
+| `GET` | `/pistaPadel/users/{userId}` | Obtener datos de un usuario |
+| `POST` | `/pistaPadel/auth/register` | Crear un nuevo usuario |
+| `PATCH` | `/pistaPadel/users/{userId}` | Modificar un usuario existente |
+
+#### Formulario de pista
+
+La creación o modificación de pistas desde administración se gestiona desde:
+
+```text
+js/admin_pista_form.js
+```
+
+Este archivo también funciona en dos modos:
+
+| Situación | Funcionamiento |
+|---|---|
+| Sin id en la URL | Crea una pista nueva |
+| Con id en la URL | Carga los datos de la pista y permite modificarlos |
+
+Endpoints utilizados:
+
+| Método | Endpoint | Función |
+|---|---|---|
+| `GET` | `/pistaPadel/courts/{courtId}` | Obtener datos de una pista |
+| `POST` | `/pistaPadel/courts` | Crear una pista nueva |
+| `PATCH` | `/pistaPadel/courts/{courtId}` | Modificar una pista existente |
+| `DELETE` | `/pistaPadel/courts/{courtId}` | Desactivar o eliminar una pista |
+
+En estas peticiones es necesario enviar el token de autenticación, ya que el backend comprueba que el usuario tenga rol `ADMIN`.
+
+### 8.10 Uso de `fetch` y Basic Auth
+
+La integración entre frontend y backend se realiza mediante la función `fetch`, que permite enviar peticiones HTTP desde JavaScript.
+
+La estructura general de una petición `GET` es:
+
+```javascript
+fetch("http://localhost:8080/pistaPadel/endpoint", {
+    method: "GET",
+    headers: {
+        "Accept": "application/json",
+        "Authorization": "Basic " + token
+    }
+});
+```
+En las peticiones que envían datos al backend, se añade también el cuerpo de la petición en formato JSON:
+
+```javascript
+fetch("http://localhost:8080/pistaPadel/endpoint", {
+    method: "POST",
+    headers: {
+        "Content-Type": "application/json",
+        "Accept": "application/json",
+        "Authorization": "Basic " + token
+    },
+    body: JSON.stringify(datos)
+});
+```
+
+El token se guarda en el navegador mediante:
+
+```javascript
+localStorage.setItem("token", tokenCreado);
+```
+
+Y se recupera cuando es necesario hacer una petición protegida:
+
+```javascript
+const token = localStorage.getItem("token");
+```
+
+El flujo general de una petición protegida es:
+
+```text
+1. JavaScript recupera el token guardado en localStorage.
+2. Se realiza una petición fetch al backend.
+3. La petición incluye la cabecera Authorization.
+4. Spring Security comprueba las credenciales.
+5. Si el usuario está autenticado y tiene permisos, se ejecuta la operación.
+6. Si no está autenticado, se devuelve 401.
+7. Si no tiene permisos suficientes, se devuelve 403.
+```
+
+Gracias a esta integración, el frontend puede trabajar con datos reales del backend y adaptar la interfaz según el usuario autenticado.
 
 ---
 
