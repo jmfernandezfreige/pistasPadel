@@ -2096,8 +2096,32 @@ Como conclusión final, consideramos que el proyecto nos ha servido para aplicar
 
 ---
 
-## 17. Bibliografía y recursos
+## 15. Bibliografía y recursos
 
-### 17.1 Documentación oficial
-### 17.2 Material de clase
-### 17.3 Herramientas de apoyo
+Para el desarrollo del proyecto se han utilizado distintos recursos y materiales de clase. Estos recursos han servido para resolver dudas técnicas, comprobar el funcionamiento de la aplicación y mejorar la organización del trabajo.
+
+### Recursos utilizados
+
+- Material proporcionado en clase.
+- Postman para probar endpoints REST.
+- GitHub para el control de versiones y trabajo colaborativo.
+- IntelliJ IDEA para el desarrollo del backend.
+- Visual Studio Code para el desarrollo del frontend.
+
+### Uso de herramientas de Inteligencia Artificial
+
+Durante el desarrollo del proyecto se ha hecho un uso consciente y responsable de herramientas de **Inteligencia Artificial** como apoyo al trabajo del equipo.
+
+La IA se ha utilizado principalmente para:
+
+- Resolver errores concretos del backend y del frontend.
+- Entender problemas relacionados con Spring Security, CORS y autenticación.
+- Revisar fragmentos de código.
+- Mejorar la organización de archivos JavaScript.
+- Ayudar a estructurar el README y la documentación del proyecto.
+- Explicar mensajes de error y posibles soluciones.
+- Proponer mejoras en la integración entre frontend y backend.
+
+En todo momento, las soluciones propuestas fueron revisadas, adaptadas y probadas por el equipo antes de incorporarlas al proyecto. Por tanto, la IA se utilizó como herramienta de apoyo y aprendizaje, no como sustituto del desarrollo ni de la comprensión del código.
+
+---
