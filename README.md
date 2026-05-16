@@ -3,6 +3,15 @@
 </p>
 <h1 align="center">PistasPadel — Arena Padel Club</h1>
 
+<p align="center">
+  <strong>Programación de Aplicaciones Telemáticas</strong>
+</p>
+
+<p align="center">
+  Bibiana Dorado Mateos · Pepe Fernández Freige · Guillermo Fuentes González · Isabel Alonso Casas
+</p>
+
+---
 
 ## Presentación del proyecto
 
