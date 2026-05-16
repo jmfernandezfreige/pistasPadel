@@ -56,6 +56,118 @@ A continuación, se explica el proyecto de forma estructurada, comenzando por un
 
 ---
 
+## Índice
+
+- [1. Descripción general del proyecto](#1-descripción-general-del-proyecto)
+  - [1.1 Objetivo de la práctica](#11-objetivo-de-la-práctica)
+  - [1.2 Descripción de la aplicación](#12-descripción-de-la-aplicación)
+  - [1.3 Perfiles de usuario: USER y ADMIN](#13-perfiles-de-usuario-user-y-admin)
+  - [1.4 Funcionalidades principales](#14-funcionalidades-principales)
+
+- [2. Equipo de trabajo y organización SCRUM](#2-equipo-de-trabajo-y-organización-scrum)
+  - [2.1 Integrantes del grupo](#21-integrantes-del-grupo)
+  - [2.2 Roles del equipo](#22-roles-del-equipo)
+  - [2.3 Organización mediante SCRUM](#23-organización-mediante-scrum)
+  - [2.4 Reparto de tareas](#24-reparto-de-tareas)
+  - [2.5 Uso de GitHub](#25-uso-de-github)
+
+- [3. Tecnologías utilizadas](#3-tecnologías-utilizadas)
+  - [3.1 Backend](#31-backend)
+  - [3.2 Frontend](#32-frontend)
+  - [3.3 Base de datos](#33-base-de-datos)
+  - [3.4 Herramientas de desarrollo](#34-herramientas-de-desarrollo)
+
+- [4. Estructura del proyecto](#4-estructura-del-proyecto)
+  - [4.1 Organización general del repositorio](#41-organización-general-del-repositorio)
+  - [4.2 Carpeta backend](#42-carpeta-backend)
+  - [4.3 Archivos HTML](#43-archivos-html)
+  - [4.4 Carpeta js](#44-carpeta-js)
+  - [4.5 Carpeta img](#45-carpeta-img)
+  - [4.6 Hoja de estilos CSS](#46-hoja-de-estilos-css)
+
+- [5. Arquitectura de la aplicación](#5-arquitectura-de-la-aplicación)
+  - [5.1 Separación entre backend y frontend](#51-separación-entre-backend-y-frontend)
+  - [5.2 Comunicación mediante API REST](#52-comunicación-mediante-api-rest)
+  - [5.3 Flujo general de funcionamiento](#53-flujo-general-de-funcionamiento)
+  - [5.4 Diferencias entre usuario y administrador](#54-diferencias-entre-usuario-y-administrador)
+
+- [6. Backend](#6-backend)
+  - [6.1 Estructura del backend con Spring Boot](#61-estructura-del-backend-con-spring-boot)
+  - [6.2 Entidades principales](#62-entidades-principales)
+  - [6.3 Repositorios JPA](#63-repositorios-jpa)
+  - [6.4 Servicios](#64-servicios)
+  - [6.5 Controladores REST](#65-controladores-rest)
+  - [6.6 Seguridad y autenticación](#66-seguridad-y-autenticación)
+  - [6.7 Base de datos H2](#67-base-de-datos-h2)
+  - [6.8 Gestión de errores](#68-gestión-de-errores)
+  - [6.9 API REST](#69-api-rest)
+
+- [7. Frontend y capturas de la interfaz](#7-frontend-y-capturas-de-la-interfaz)
+  - [7.1 Diseño general del frontend](#71-diseño-general-del-frontend)
+  - [7.2 Página principal](#72-página-principal)
+  - [7.3 Página principal con usuario autenticado](#73-página-principal-con-usuario-autenticado)
+  - [7.4 Página principal con administrador autenticado](#74-página-principal-con-administrador-autenticado)
+  - [7.5 Registro de usuario](#75-registro-de-usuario)
+  - [7.6 Inicio de sesión](#76-inicio-de-sesión)
+  - [7.7 Listado de pistas](#77-listado-de-pistas)
+  - [7.8 Detalle de pista](#78-detalle-de-pista)
+  - [7.9 Nueva reserva](#79-nueva-reserva)
+  - [7.10 Mis reservas](#710-mis-reservas)
+  - [7.11 Detalle de reserva](#711-detalle-de-reserva)
+  - [7.12 Panel de administración de reservas](#712-panel-de-administración-de-reservas)
+  - [7.13 Panel de administración de usuarios](#713-panel-de-administración-de-usuarios)
+  - [7.14 Formulario de usuario](#714-formulario-de-usuario)
+  - [7.15 Formulario de pista](#715-formulario-de-pista)
+
+- [8. JavaScript e integración con el backend](#8-javascript-e-integración-con-el-backend)
+  - [8.1 Registro de usuarios](#81-registro-de-usuarios)
+  - [8.2 Inicio de sesión](#82-inicio-de-sesión)
+  - [8.3 Gestión de sesión y roles](#83-gestión-de-sesión-y-roles)
+  - [8.4 Carga dinámica de pistas](#84-carga-dinámica-de-pistas)
+  - [8.5 Detalle de pista y disponibilidad](#85-detalle-de-pista-y-disponibilidad)
+  - [8.6 Creación de reservas](#86-creación-de-reservas)
+  - [8.7 Consulta y gestión de reservas](#87-consulta-y-gestión-de-reservas)
+  - [8.8 Detalle, modificación y cancelación de reservas](#88-detalle-modificación-y-cancelación-de-reservas)
+  - [8.9 Funcionalidades de administrador](#89-funcionalidades-de-administrador)
+  - [8.10 Uso de fetch y Basic Auth](#810-uso-de-fetch-y-basic-auth)
+
+- [9. Funcionalidades implementadas](#9-funcionalidades-implementadas)
+  - [9.1 Funcionalidades según el tipo de usuario](#91-funcionalidades-según-el-tipo-de-usuario)
+  - [9.2 Resumen por módulos de la aplicación](#92-resumen-por-módulos-de-la-aplicación)
+  - [9.3 Funcionalidades destacadas](#93-funcionalidades-destacadas)
+
+- [10. Instalación y ejecución](#10-instalación-y-ejecución)
+  - [10.1 Requisitos previos](#101-requisitos-previos)
+  - [10.2 Clonar el repositorio](#102-clonar-el-repositorio)
+  - [10.3 Ejecutar el backend](#103-ejecutar-el-backend)
+  - [10.4 Acceder a H2](#104-acceder-a-h2)
+  - [10.5 Abrir el frontend](#105-abrir-el-frontend)
+  - [10.6 Usuarios de prueba](#106-usuarios-de-prueba)
+
+- [11. Pruebas realizadas](#11-pruebas-realizadas)
+
+- [12. Problemas encontrados y soluciones](#12-problemas-encontrados-y-soluciones)
+  - [12.1 Seguridad y autenticación](#121-seguridad-y-autenticación)
+  - [12.2 CORS e integración con JavaScript](#122-cors-e-integración-con-javascript)
+  - [12.3 Persistencia y carga de datos](#123-persistencia-y-carga-de-datos)
+  - [12.4 Organización de páginas HTML](#124-organización-de-páginas-html)
+  - [12.5 Control de versiones con GitHub](#125-control-de-versiones-con-github)
+
+- [13. Mejoras futuras](#13-mejoras-futuras)
+  - [13.1 Mejoras funcionales](#131-mejoras-funcionales)
+  - [13.2 Mejoras visuales](#132-mejoras-visuales)
+  - [13.3 Mejoras de seguridad](#133-mejoras-de-seguridad)
+  - [13.4 Despliegue de la aplicación](#134-despliegue-de-la-aplicación)
+
+- [14. Conclusiones](#14-conclusiones)
+  - [14.1 Resultados obtenidos](#141-resultados-obtenidos)
+  - [14.2 Aprendizajes técnicos](#142-aprendizajes-técnicos)
+  - [14.3 Valoración del trabajo en equipo](#143-valoración-del-trabajo-en-equipo)
+
+- [15. Bibliografía y recursos](#15-bibliografía-y-recursos)
+
+---
+
 ## 1. Descripción general del proyecto
 
 
