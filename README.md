@@ -4,6 +4,16 @@
 <h1 align="center">PistasPadel — Arena Padel Club</h1>
 
 
+## Presentación del proyecto
+
+Este documento recoge la descripción completa del proyecto **PistasPadel — Arena Padel Club**, una aplicación web desarrollada como práctica de la asignatura **Programación de Aplicaciones Telemáticas**.
+
+A lo largo del README se detallan los objetivos de la práctica, la organización del equipo, la planificación por entregas, la arquitectura de la aplicación, las tecnologías utilizadas y las principales funcionalidades implementadas. También se incluye información sobre la base de datos inicial, el funcionamiento del backend, la interfaz frontend y la integración realizada mediante JavaScript.
+
+A continuación, se explica el proyecto de forma estructurada, comenzando por una descripción general de la aplicación y de los perfiles de usuario disponibles.
+
+---
+
 > [!NOTE]
 > **BASE DE DATOS INICIALIZADA**
 >
