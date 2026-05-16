@@ -70,7 +70,7 @@ class ReservaE2ETest {
 		repoPista.save(pista);
 
 		// Se autentica el usuario
-		TestRestTemplate authrestTemplate = restTemplate.withBasicAuth("gonzalo@gmail.com", "1234");
+		TestRestTemplate authRestTemplate = restTemplate.withBasicAuth("bibi@gmail.com", "1234");
 
 		// Se construye el JSON para el POST de Reserva
 		String json = "{" +
@@ -86,21 +86,11 @@ class ReservaE2ETest {
 
 		String loginBody = "username=bibi@gmail.com&password=1234";
 
-		ResponseEntity<String> loginResponse = restTemplate.exchange(
-				"/pistaPadel/auth/login",
-				HttpMethod.POST,
-				new HttpEntity<>(loginBody, loginHeaders),
-				String.class
-		);
-
-		String cookie = loginResponse.getHeaders().getFirst(HttpHeaders.SET_COOKIE);
-
-		// POST reserva usando la cookie
+		// POST reserva
 		HttpHeaders headers = new HttpHeaders();
 		headers.setContentType(MediaType.APPLICATION_JSON);
-		headers.set(HttpHeaders.COOKIE, cookie);
 
-		ResponseEntity<Reserva> responseCreate = restTemplate.exchange(
+		ResponseEntity<Reserva> responseCreate = authRestTemplate.exchange(
 				"/pistaPadel/reservations",
 				HttpMethod.POST,
 				new HttpEntity<>(json, headers),
@@ -109,20 +99,20 @@ class ReservaE2ETest {
 		System.out.println("STATUS POST = " + responseCreate.getStatusCode());
 		System.out.println("BODY POST = " + responseCreate.getBody());
 
-		Long idReserva = responseCreate.getBody().getIdReserva();
 
 		// ASSERTS para verificar el POST
 		Assertions.assertEquals(HttpStatus.CREATED, responseCreate.getStatusCode());
 		Assertions.assertNotNull(responseCreate.getBody());
-		// Assertions.assertFalse(responseCreate.getBody().isBlank());
 
 
+		Long idReserva = responseCreate.getBody().getIdReserva();
 		// Ahora se hace el GET usando el ID real
-		ResponseEntity<String> responseGet = authrestTemplate.exchange(
+		ResponseEntity<String> responseGet = authRestTemplate.exchange(
 				"/pistaPadel/reservations/" + idReserva,
 				HttpMethod.GET,
 				new HttpEntity<>(headers),
-				String.class);
+				String.class
+		);
 
 		System.out.println("STATUS POST = " + responseGet.getStatusCode());
 		System.out.println("BODY POST = " + responseGet.getBody());
@@ -132,5 +122,21 @@ class ReservaE2ETest {
 		Assertions.assertNotNull(responseGet.getBody());
 		Assertions.assertFalse(responseGet.getBody().isBlank());
 		Assertions.assertTrue(responseGet.getBody().contains("2026-05-06"));
+	}
+
+	private String obtenerCookieLogin(String email, String password) {
+		HttpHeaders loginHeaders = new HttpHeaders();
+		loginHeaders.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
+
+		String loginBody = "username=" + email + "&password=" + password;
+
+		ResponseEntity<String> loginResponse = restTemplate.exchange(
+				"/pistaPadel/auth/login",
+				HttpMethod.POST,
+				new HttpEntity<>(loginBody, loginHeaders),
+				String.class
+		);
+
+		return loginResponse.getHeaders().getFirst(HttpHeaders.SET_COOKIE);
 	}
 }

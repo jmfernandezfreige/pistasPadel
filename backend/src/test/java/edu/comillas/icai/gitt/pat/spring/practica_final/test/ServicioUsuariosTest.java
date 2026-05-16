@@ -39,6 +39,7 @@ class ServicioUsuariosTest {
         nuevoUsuario.setPassword("1234");
         nuevoUsuario.setTelefono("666666666");
         nuevoUsuario.setActivo(true);
+        nuevoUsuario.setRol(new Rol());
 
         Rol rolUser = new Rol(Rol.NombreRol.USER, "Usuario estándar");
         //Simula mail no existe

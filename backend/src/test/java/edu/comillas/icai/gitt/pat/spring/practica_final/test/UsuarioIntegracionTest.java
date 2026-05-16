@@ -46,6 +46,7 @@ class UsuarioIntegracionTest {
         usuario.setPassword("1234");
         usuario.setTelefono("666666666");
         usuario.setActivo(true);
+        usuario.setRol(new Rol());
 
         ResponseEntity<Usuario> respuesta = restTemplate.postForEntity(
                 "/pistaPadel/auth/register",
