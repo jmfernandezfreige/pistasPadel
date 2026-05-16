@@ -136,13 +136,175 @@ Las funcionalidades principales implementadas en el proyecto son:
 
 ## 2. Equipo de trabajo y organización SCRUM
 
+El proyecto se ha desarrollado en equipo, siguiendo una organización basada en pequeñas tareas repartidas por entregas. Para facilitar la coordinación, se aplicó una metodología inspirada en SCRUM, dividiendo el trabajo en fases: backend, frontend HTML/CSS e integración mediante JavaScript.
+
+Esta forma de trabajo permitió avanzar de manera progresiva, revisar cada parte por separado y comprobar el funcionamiento de la aplicación antes de integrar todo el proyecto en el repositorio final.
+
 ### 2.1 Integrantes del grupo
+
+| Integrante | Participación en el proyecto |
+|---|---|
+| Bibiana Dorado Mateos | Desarrollo técnico, coordinación de código y apoyo en la implementación |
+| Pepe Fernández Freige | Análisis de errores, revisión de lógica y validación de todo el funcionamiento |
+| Guillermo Fuentes González | Pruebas, control de calidad y revisión previa a entregas |
+| Isabel Alonso Casas | Organización de tareas, planificación del trabajo y documentación |
+
 ### 2.2 Roles del equipo
+
+Como el equipo estaba formado por cuatro personas, se repartieron los roles de la siguiente manera:
+
+| Integrante | Rol asignado | Responsabilidad principal |
+|---|---|---|
+| Pepe Fernández Freige | Analista | Detección de errores, revisión de la lógica del proyecto y análisis del funcionamiento general |
+| Bibiana Dorado Mateos | Program Manager | Coordinación de la parte técnica y apoyo en el desarrollo del código |
+| Guillermo Fuentes González | Release Manager / QA | Realización de pruebas y comprobación del correcto funcionamiento antes de cada entrega |
+| Isabel Alonso Casas | Scrum Master | Organización de tareas, planificación del trabajo y seguimiento de las entregas |
+
+Esta división permitió que cada miembro tuviera una responsabilidad clara dentro del proyecto, evitando duplicar trabajo y facilitando la organización del equipo. Aunque todos los integrantes trabajaron de manera activa en todas las partes del proyecto sobretodo implementado código. 
+
 ### 2.3 Organización mediante SCRUM
+
+La metodología de trabajo se basó en dividir el proyecto en tareas pequeñas y revisables. Cada entrega funcionó como una fase de desarrollo independiente, con objetivos concretos y comprobaciones antes de avanzar a la siguiente parte.
+
+La organización seguida fue la siguiente:
+
+| Fase | Objetivo principal | Resultado |
+|---|---|---|
+| Backend inicial | Definir la estructura básica del backend y los primeros endpoints | API REST inicial con records, controladores y pruebas en Postman |
+| Backend avanzado | Añadir persistencia, seguridad, validaciones y lógica de negocio | Backend conectado a base de datos H2 con entidades, repositorios y servicios |
+| Frontend HTML/CSS | Crear las páginas visuales de la aplicación | Interfaz completa estática para usuario y administrador |
+| JavaScript e integración | Conectar el frontend con el backend | Aplicación funcional con peticiones `fetch`, autenticación y gestión dinámica de datos |
+
+Para controlar el avance, se prepararon tablas de tareas por entrega, indicando qué había que implementar, dónde se localizaba cada parte y si estaba completada y comprobada.
+
 ### 2.4 Reparto de tareas
+
+#### Entrega 1 — Backend inicial
+
+En la primera entrega se desarrolló la base del backend, creando los modelos iniciales, los primeros endpoints REST, las restricciones principales y las pruebas con Postman.
+
+| Tarea | Localización | Estado | Comentario |
+|---|---|---|---|
+| Record `Usuario` | Carpeta records / modelo | Completado | Representación inicial del usuario |
+| Record `Pista` | Carpeta records / modelo | Completado | Representación inicial de las pistas |
+| Record `Reserva` | Carpeta records / modelo | Completado | Representación inicial de las reservas |
+| Record `Disponibilidad` | Lógica de reservas | Completado | Finalmente se implementó mediante la lógica de disponibilidad de reservas |
+| Record `Rol` | Carpeta records / modelo | Completado | Diferenciación entre usuario normal y administrador |
+| Trazas | Backend | Completado | Utilizadas para comprobar el funcionamiento del servidor |
+| Tareas programadas | Clase de tareas programadas | Completado | Envío o ejecución de tareas automáticas |
+| Pruebas | Tests / Postman | Completado | Comprobación inicial de endpoints |
+| `POST /pistaPadel/auth/register` | Controller | Completado | Registro de usuario |
+| `POST /pistaPadel/auth/login` | Seguridad | Completado | Inicio de sesión |
+| `POST /pistaPadel/auth/logout` | Seguridad | Completado | Cierre de sesión |
+| `GET /pistaPadel/auth/me` | Controller | Completado | Consulta del usuario autenticado |
+| `GET /pistaPadel/users` | Controller | Completado | Listado de usuarios |
+| `GET /pistaPadel/users/{userId}` | Controller | Completado | Consulta de un usuario concreto |
+| `PATCH /pistaPadel/users/{userId}` | Controller | Completado | Modificación de datos de usuario |
+| `POST /pistaPadel/courts` | Controller | Completado | Creación de pistas |
+| `GET /pistaPadel/courts` | Controller | Completado | Listado de pistas |
+| `GET /pistaPadel/courts/{courtId}` | Controller | Completado | Detalle de una pista |
+| `PATCH /pistaPadel/courts/{courtId}` | Controller | Completado | Modificación de pista |
+| `DELETE /pistaPadel/courts/{courtId}` | Controller | Completado | Eliminación o desactivación de pista |
+| `GET /pistaPadel/availability` | Controller | Completado | Consulta de disponibilidad |
+| `GET /pistaPadel/courts/{courtId}/availability` | Controller | Completado | Disponibilidad de una pista concreta |
+| `POST /pistaPadel/reservations` | Controller | Completado | Creación de reservas |
+| `GET /pistaPadel/reservations` | Controller | Completado | Consulta de reservas del usuario |
+| `GET /pistaPadel/reservations/{reservationId}` | Controller | Completado | Detalle de una reserva |
+| `DELETE /pistaPadel/reservations/{reservationId}` | Controller | Completado | Cancelación de reserva |
+| `PATCH /pistaPadel/reservations/{reservationId}` | Controller | Completado | Modificación de reserva |
+| `GET /pistaPadel/admin/reservations` | Controller | Completado | Consulta global de reservas para administrador |
+| Restricción: email único | Registro de usuario | Completado | Evita usuarios duplicados |
+| Restricción: un usuario puede tener varias reservas | Usuario / Reserva | Completado | Relación usuario-reservas |
+| Restricción: solo ADMIN gestiona pistas | Seguridad | Completado | Control mediante autorización |
+| Restricción: nombre de pista único | Pista | Completado | Evita duplicar pistas |
+| Restricción: una pista puede tener varias reservas | Pista / Reserva | Completado | Relación pista-reservas |
+| Restricción: no reservar pista inactiva | Lógica de reservas | Completado | Evita reservas sobre pistas no disponibles |
+| Restricción: evitar reservas solapadas | Lógica de reservas | Completado | Control de disponibilidad horaria |
+| Restricción: usuario solo modifica o cancela sus reservas | Seguridad / Reservas | Completado | Control de permisos |
+| Restricción: reserva asociada a usuario y pista | Reserva | Completado | Relación correcta entre entidades |
+
+#### Entrega 2 — Backend con persistencia, seguridad y validaciones
+
+En la segunda parte del backend se evolucionó la aplicación para trabajar con persistencia real, entidades JPA, repositorios, servicios, seguridad y una base de datos H2 inicializada con datos de prueba.
+
+| Tarea | Localización | Estado | Comentario |
+|---|---|---|---|
+| Entidad `Usuario` | Backend / entidades | Completado | Usuario persistente en base de datos |
+| Entidad `Rol` | Backend / entidades | Completado | Gestión de roles `USER` y `ADMIN` |
+| Entidad `Pista` | Backend / entidades | Completado | Gestión de pistas persistentes |
+| Entidad `Reserva` | Backend / entidades | Completado | Reservas asociadas a usuario y pista |
+| Repositorio de usuarios | Backend / repositorios | Completado | Acceso a datos de usuarios |
+| Repositorio de pistas | Backend / repositorios | Completado | Acceso a datos de pistas |
+| Repositorio de reservas | Backend / repositorios | Completado | Acceso a datos de reservas |
+| Servicios de lógica de negocio | Backend / servicios | Completado | Separación entre controlador y lógica |
+| Controladores REST separados | Backend / controladores | Completado | Controladores de usuarios, pistas y reservas |
+| Seguridad con roles | Configuración de seguridad | Completado | Diferenciación entre `USER` y `ADMIN` |
+| Autenticación | Spring Security | Completado | Acceso protegido a endpoints privados |
+| Base de datos H2 | `application.properties` | Completado | Persistencia local del proyecto |
+| Carga inicial de datos | `data.sql` | Completado | Usuarios, roles, pistas y reservas de prueba |
+| Validaciones | Entidades / controladores | Completado | Validación de datos enviados al backend |
+| Control de errores | Backend | Completado | Respuestas controladas ante errores |
+| Pruebas de endpoints | Postman / navegador | Completado | Comprobación del funcionamiento de la API |
+| Pruebas | Tests / Postman | Completado | Comprobación mediante test end to end y otros |
+
+#### Entrega 3 — Frontend HTML y CSS
+
+En esta entrega se diseñó la parte visual de la aplicación. Se crearon las páginas HTML necesarias para los distintos flujos de usuario y administrador, junto con una hoja de estilos común para mantener una estética uniforme.
+
+| Página / archivo | Función | Estado |
+|---|---|---|
+| `index.html` | Página principal sin iniciar sesión | Completado |
+| `login.html` | Formulario de inicio de sesión | Completado |
+| `registro.html` | Formulario para registrar un nuevo usuario | Completado |
+| `index_log_user.html` | Página principal con usuario logueado | Completado |
+| `index_log_admin.html` | Página principal con administrador logueado | Completado |
+| `pistas.html` | Listado general de pistas | Completado |
+| `pista_detalle.html` | Vista de una pista concreta con información y disponibilidad | Completado |
+| `usuario_detalle.html` | Página para que el usuario consulte y edite sus datos | Completado |
+| `usuario_reservas.html` | Página donde el usuario ve sus reservas | Completado |
+| `usuario_reserva_detalle.html` | Vista de una reserva concreta con opción de modificar o cancelar | Completado |
+| `usuario_reserva_nueva.html` | Formulario para crear una nueva reserva | Completado |
+| `admin_usuarios.html` | Listado completo de usuarios para administrador | Completado |
+| `admin_usuario_detalle.html` | Vista de detalle/modificación de usuarios para administrador | Completado |
+| `admin_pistas.html` | Listado de pistas para administrador | Completado |
+| `admin_pista_detalle.html` | Detalle de pista con acciones de administrador | Completado |
+| `admin_pista_form.html` | Formulario para crear o modificar pistas | Completado |
+| `admin_reservas.html` | Página donde el administrador ve todas las reservas | Completado |
+| `admin_reserva_detalle.html` | Vista detalle de una reserva desde el perfil administrador | Completado |
+| `styles.css` | Hoja de estilos general de la aplicación | Completado |
+
+En esta fase algunas páginas estaban separadas según el tipo de usuario. Posteriormente, durante la integración con JavaScript, varias de estas vistas se unificaron para evitar duplicidad y mostrar opciones diferentes según el rol autenticado.
+
+#### Entrega 4 — JavaScript e integración frontend-backend
+
+En la última entrega se conectó el frontend con el backend mediante JavaScript. El objetivo principal fue transformar las páginas estáticas en páginas dinámicas, capaces de consultar datos reales del backend y enviar formularios mediante peticiones `fetch`.
+
+| Archivo JavaScript | Función principal | Estado |
+|---|---|---|
+| `sesion.js` | Gestiona la cabecera según el estado de sesión y el rol del usuario | Completado |
+| `login.js` | Envía las credenciales al backend y guarda el token de autenticación | Completado |
+| `registro.js` | Envía el formulario de registro al backend y valida que las contraseñas coincidan | Completado |
+| `index.js` | Se decidió no crear JS específico, sino fusionar las páginas de inicio usando `sesion.js` | Completado |
+| `usuario_detalle.js` | Unifica la vista de datos de usuario y administrador, permitiendo consultar y modificar información | Completado |
+| `pista_detalle.js` | Unifica las vistas de detalle de pista y adapta las acciones según el rol | Completado |
+| `pistas.js` | Carga dinámicamente las pistas y muestra acciones diferentes para usuario o administrador | Completado |
+| `reservas.js` | Carga reservas del usuario o reservas globales para administrador según corresponda | Completado |
+| `reserva_detalle.js` | Permite consultar, modificar o cancelar una reserva concreta | Completado |
+| `reserva_nueva.js` | Carga pistas y horarios disponibles, y envía el POST para crear una nueva reserva | Completado |
+| `admin_usuarios.js` | Carga todos los usuarios y los muestra dinámicamente en el HTML | Completado |
+| `admin_usuario_form.js` | Gestiona el formulario de creación o modificación de usuarios | Completado |
+| `admin_pista_form.js` | Gestiona la creación y modificación de pistas mediante POST o PATCH | Completado |
+
+Esta organización permitió implementar el proyecto mediante tareas pequeñas, claras y comprobables. Además, facilitó la integración final, ya que cada archivo JavaScript tenía una responsabilidad concreta dentro de la aplicación.
+
 ### 2.5 Uso de GitHub
 
----
+Durante el desarrollo del proyecto se utilizó GitHub como herramienta principal de control de versiones y organización del código.
+
+En las primeras entregas se trabajó con repositorios separados para evitar mezclar el backend con el frontend antes de que ambas partes estuvieran correctamente implementadas. De esta forma, el backend pudo desarrollarse y probarse de manera independiente, mientras que el frontend HTML/CSS se diseñó por separado.
+
+Una vez que ambas partes estuvieron suficientemente avanzadas, en la última entrega se integró todo en un único repositorio final.
+
 
 ## 3. Planificación por entregas
 
