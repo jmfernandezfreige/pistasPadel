@@ -305,42 +305,43 @@ En las primeras entregas se trabajó con repositorios separados para evitar mezc
 
 Una vez que ambas partes estuvieron suficientemente avanzadas, en la última entrega se integró todo en un único repositorio final.
 
+---
 
-## 3. Planificación por entregas
+## 3. Tecnologías utilizadas
 
-### 3.1 Entrega 1 — Backend inicial
-### 3.2 Entrega 2 — Backend con persistencia, seguridad y validaciones
-### 3.3 Entrega 3 — Frontend HTML y CSS
-### 3.4 Entrega 4 — JavaScript e integración frontend-backend
+En el desarrollo del proyecto se han utilizado distintas tecnologías para separar correctamente la parte del backend, la interfaz frontend, la base de datos y las herramientas de trabajo. Esta separación ha permitido desarrollar cada parte de forma independiente y posteriormente integrarlas en una única aplicación funcional.
+
+### 3.1 Backend
+El backend se ha desarrollado en **Java** utilizando **Spring Boot** como framework principal. Esta parte de la aplicación se encarga de gestionar la lógica del sistema, los usuarios, las pistas, las reservas, la seguridad y la comunicación con la base de datos. Para programar y ejecutar el backend se ha utilizado **IntelliJ IDEA**.
+
+### 3.2 Frontend
+El frontend se ha desarrollado con **HTML**, **CSS** y **JavaScript**. HTML se ha utilizado para estructurar las páginas, CSS para definir el diseño visual de la aplicación y JavaScript para hacer que las páginas sean dinámicas y puedan comunicarse con el backend. Para esta parte se ha utilizado **Visual Studio Code**.
+
+### 3.3 Base de datos
+Como base de datos se ha utilizado **H2**, una base de datos ligera que permite trabajar de forma sencilla durante el desarrollo de la práctica. En ella se almacenan los usuarios, los roles, las pistas y las reservas. Además, se ha usado un archivo `data.sql` para cargar datos iniciales de prueba al arrancar la aplicación.
+
+### 3.4 Herramientas de desarrollo
+Para organizar el trabajo se ha utilizado **Git** como sistema de control de versiones y **GitHub** como repositorio remoto. También se ha usado **Postman** para probar los endpoints del backend y comprobar que las peticiones funcionaban correctamente antes de conectarlas con el frontend.
 
 ---
 
-## 4. Tecnologías utilizadas
+## 4. Estructura del proyecto
 
-### 4.1 Backend
-### 4.2 Frontend
-### 4.3 Base de datos
-### 4.4 Herramientas de desarrollo
-
----
-
-## 5. Estructura del proyecto
-
-### 5.1 Organización general del repositorio
-### 5.2 Carpeta backend
-### 5.3 Archivos HTML
-### 5.4 Carpeta js
-### 5.5 Carpeta img
-### 5.6 Hoja de estilos CSS
+### 4.1 Organización general del repositorio
+### 4.2 Carpeta backend
+### 4.3 Archivos HTML
+### 4.4 Carpeta js
+### 4.5 Carpeta img
+### 4.6 Hoja de estilos CSS
 
 ---
 
-## 6. Arquitectura de la aplicación
+## 5. Arquitectura de la aplicación
 
-### 6.1 Separación entre backend y frontend
-### 6.2 Comunicación mediante API REST
-### 6.3 Flujo general de funcionamiento
-### 6.4 Diferencias entre usuario y administrador
+### 5.1 Separación entre backend y frontend
+### 5.2 Comunicación mediante API REST
+### 5.3 Flujo general de funcionamiento
+### 5.4 Diferencias entre usuario y administrador
 
 ---
 
