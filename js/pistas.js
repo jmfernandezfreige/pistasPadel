@@ -16,7 +16,7 @@ async function cargarPistas() {
             botonPrincipal.href = "admin_pista_form.html";
             botonPrincipal.textContent = "Añadir pista";
         } else if (rol === "USER") {
-            botonPrincipal.href = "usuario_reserva_nueva.html"; 
+            botonPrincipal.href = "reserva_nueva.html"; 
             botonPrincipal.textContent = "Reservar una pista";
         } else {
             botonPrincipal.href = "login.html";
