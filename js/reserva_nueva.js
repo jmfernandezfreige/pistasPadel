@@ -17,6 +17,20 @@ document.addEventListener("DOMContentLoaded", function () {
     // pista seleccionada
     let pistaSeleccionada = null;
 
+    // Leer la URL para ver si viene con hora y con pista
+    const parametrosURL = new URLSearchParams(window.location.search);
+    const idPistaURL = parametrosURL.get("idPista");
+    let horaURL = parametrosURL.get("hora");
+
+    // Si viene con una hora, rellenamos la fecha de hoy automáticamente
+    if (horaURL) {
+        const hoy = new Date();
+        const año = hoy.getFullYear();
+        const mes = String(hoy.getMonth() + 1).padStart(2, '0');
+        const dia = String(hoy.getDate()).padStart(2, '0');
+        inputFecha.value = `${año}-${mes}-${dia}`;
+    }
+
     // Cargamos las pistas al entrar en la página
     cargarPistas();
 
@@ -44,9 +58,6 @@ document.addEventListener("DOMContentLoaded", function () {
 
             // Borramos las pistas 
             contenedorPistas.innerHTML = "";
-
-            const parametrosURL = new URLSearchParams(window.location.search);
-            const idPistaURL = parametrosURL.get("idPista");
 
             // Pintamos cada pista en un botón
             pistas.forEach(function (pista) {
@@ -157,6 +168,15 @@ document.addEventListener("DOMContentLoaded", function () {
             });
 
             contenedorHorarios.appendChild(boton);
+
+            // Si la hora coincide con la URL, la autoseleccionamos
+            if (horaURL && hora.substring(0, 5) === horaURL.substring(0, 5)) {
+                seleccionarHora(hora, boton);
+                
+                // Borramos la hora de la URL internamente para que si el usuario 
+                // luego cambia a otro día manualmente, no se vuelva a autoseleccionar sola
+                horaURL = null; 
+            }
         });
     }
 
