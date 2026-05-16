@@ -992,58 +992,166 @@ Los endpoints públicos permiten registrar usuarios, iniciar sesión y consultar
 
 ## 7. Frontend y capturas de la interfaz
 
+El frontend de la aplicación está desarrollado con **HTML**, **CSS** y **JavaScript**. Su objetivo es ofrecer una interfaz clara para que los usuarios puedan consultar pistas, registrarse, iniciar sesión y realizar reservas, y para que los administradores puedan gestionar usuarios, pistas y reservas.
+
+
 ### 7.1 Diseño general del frontend
+
+El diseño del frontend se ha realizado con una estética común en todas las páginas, manteniendo una misma cabecera, pie de página, botones, formularios, colores y estructura visual.
+
+La interfaz se adapta según el tipo de usuario:
+
+| Tipo de acceso | Comportamiento de la interfaz |
+|---|---|
+| Usuario no autenticado | Se muestran opciones de registro e inicio de sesión |
+| Usuario `USER` | Se muestran opciones para consultar pistas, reservar y ver sus reservas |
+| Usuario `ADMIN` | Se muestran opciones de gestión de usuarios, pistas y reservas |
+
+Además, varias páginas que inicialmente estaban separadas para usuario y administrador se han unificado mediante JavaScript. De esta forma, una misma vista puede mostrar botones o acciones diferentes según el rol del usuario autenticado.
+
+
 ### 7.2 Página principal
 
-<!-- Captura de la página principal -->
-<!-- ![Página principal](img/capturas/index.png) -->
+La página principal presenta la aplicación **Arena Padel Club**, mostrando una primera visión del club, sus instalaciones y las opciones principales de navegación.
 
-### 7.3 Registro de usuario
+Esta página es importante porque funciona como punto de entrada a la aplicación.
 
-<!-- Captura del registro -->
-<!-- ![Registro](img/capturas/registro.png) -->
+**Cabecera e inicio**
 
-### 7.4 Inicio de sesión
+<img width="1241" height="728" alt="image" src="https://github.com/user-attachments/assets/31d52224-324d-43fa-a436-53c7ad449c3c" />
 
-<!-- Captura del login -->
-<!-- ![Login](img/capturas/login.png) -->
+**Simulación de blog**
 
-### 7.5 Listado de pistas
+<img width="1229" height="707" alt="image" src="https://github.com/user-attachments/assets/ca1900f2-5d72-4a0b-8d38-9ca7053dc5c7" />
 
-<!-- Captura del listado de pistas -->
-<!-- ![Listado de pistas](img/capturas/pistas.png) -->
+**Footer y botones a instalciones y reservas**
 
-### 7.6 Detalle de pista
+<img width="1250" height="727" alt="image" src="https://github.com/user-attachments/assets/143b8d21-4e23-4642-8df9-3623bb26aa7d" />
 
-<!-- Captura del detalle de pista -->
-<!-- ![Detalle de pista](img/capturas/pista_detalle.png) -->
 
-### 7.7 Nueva reserva
+### 7.3 Página principal con usuario autenticado
 
-<!-- Captura de nueva reserva -->
-<!-- ![Nueva reserva](img/capturas/reserva_nueva.png) -->
+Cuando un usuario normal inicia sesión, la cabecera cambia y muestra el menú personalizado del usuario. Desde este menú puede acceder a sus datos, sus reservas o crear una nueva reserva.
 
-### 7.8 Mis reservas
+<img width="1244" height="727" alt="image" src="https://github.com/user-attachments/assets/0d745784-9d12-4919-b845-94f3f664d1b4" />
 
-<!-- Captura de reservas del usuario -->
-<!-- ![Mis reservas](img/capturas/reservas.png) -->
 
-### 7.9 Panel de administración de pistas
+### 7.4 Página principal con administrador autenticado
 
-<!-- Captura de administración de pistas -->
-<!-- ![Administración de pistas](img/capturas/admin_pistas.png) -->
+Cuando el usuario autenticado tiene rol `ADMIN`, la cabecera muestra opciones de administración, como la gestión de usuarios, pistas y reservas.
 
-### 7.10 Panel de administración de usuarios
+<img width="1242" height="724" alt="image" src="https://github.com/user-attachments/assets/bafeb115-1ed7-4aac-90d0-dbe8ea493054" />
 
-<!-- Captura de administración de usuarios -->
-<!-- ![Administración de usuarios](img/capturas/admin_usuarios.png) -->
 
-### 7.11 Panel de administración de reservas
+### 7.5 Registro de usuario
 
-<!-- Captura de administración de reservas -->
-<!-- ![Administración de reservas](img/capturas/admin_reservas.png) -->
+La página de registro permite crear una nueva cuenta introduciendo los datos personales del usuario.
 
----
+Desde JavaScript se valida que las contraseñas coincidan antes de enviar el formulario al backend.
+
+<img width="746" height="689" alt="image" src="https://github.com/user-attachments/assets/f574fcec-ec4c-4408-8b1c-e06850f48a80" />
+
+
+### 7.6 Inicio de sesión
+
+La página de login permite iniciar sesión introduciendo email y contraseña.
+
+Cuando las credenciales son correctas, JavaScript guarda la autenticación y redirige al usuario a la página principal.
+
+<img width="1247" height="698" alt="image" src="https://github.com/user-attachments/assets/757a7711-1e9a-431e-a14e-29c1fdbb234a" />
+
+
+### 7.7 Listado de pistas
+
+La página de pistas muestra el listado general de pistas del club. Esta vista cambia según el rol del usuario.
+
+Aunque se utiliza la misma página de pistas, el administrador ve acciones diferentes, como modificar o eliminar pistas.
+
+| Rol | Acciones disponibles |
+|---|---|
+| Usuario no autenticado | Ver detalles e iniciar sesión para reservar |
+| `USER` | Ver detalles y reservar una pista |
+| `ADMIN` | Modificar o eliminar pistas |
+
+**VISTA USER**
+<img width="1145" height="645" alt="image" src="https://github.com/user-attachments/assets/f3184016-e3c0-40ae-b74e-3b56e1e760cd" />
+
+**VISTA ADMIN**
+<img width="1214" height="643" alt="image" src="https://github.com/user-attachments/assets/c0148d75-6ed5-45d6-bd1f-38f1d379c3df" />
+
+
+### 7.8 Detalle de pista
+
+La página de detalle de pista muestra la información de una pista concreta, como su nombre, ubicación, precio y disponibilidad.
+
+Desde esta pantalla el usuario puede consultar la pista antes de realizar una reserva.
+
+<img width="1257" height="720" alt="image" src="https://github.com/user-attachments/assets/8a9344fa-7b9c-4490-aa3d-09c5848ef599" />
+
+<img width="1244" height="715" alt="image" src="https://github.com/user-attachments/assets/dabf22d2-90b0-4dee-ae72-4e99f8c57cf4" />
+
+
+### 7.9 Nueva reserva
+
+La página de nueva reserva permite seleccionar una pista, elegir una fecha y escoger una franja horaria disponible.
+
+Esta vista está conectada con el backend mediante JavaScript, de forma que las pistas y los horarios disponibles se cargan dinámicamente.
+
+<img width="1207" height="717" alt="image" src="https://github.com/user-attachments/assets/84883c7c-b636-4ef6-8be3-4c19283eafc0" />
+
+
+### 7.10 Mis reservas
+
+La página de reservas permite al usuario consultar las reservas que ha realizado.
+
+Desde esta vista puede acceder al detalle de una reserva concreta y realizar acciones como modificarla o cancelarla, según las condiciones establecidas.
+
+<img width="1231" height="694" alt="image" src="https://github.com/user-attachments/assets/43e614ae-fb1d-4dbd-91fc-55f53bb3c2e3" />
+
+
+### 7.11 Detalle de reserva
+
+La página de detalle de reserva muestra la información de una reserva concreta, incluyendo la pista, la fecha, la hora y el estado.
+
+Esta pantalla permite consultar la reserva con más detalle y realizar acciones sobre ella si el usuario tiene permisos.
+
+<img width="1228" height="727" alt="image" src="https://github.com/user-attachments/assets/42cb9df8-7a3a-4fa6-88ab-757007997d69" />
+
+
+### 7.12 Panel de administración de reservas
+
+El administrador puede consultar todas las reservas del sistema, no solo las suyas propias.
+
+Esta vista permite comprobar la gestión global de reservas desde el perfil de administrador.
+
+<img width="1229" height="719" alt="image" src="https://github.com/user-attachments/assets/5a03e884-6d09-44fb-befc-aefe3c4db93f" />
+
+
+### 7.13 Panel de administración de usuarios
+
+El panel de administración de usuarios permite al administrador consultar los usuarios registrados en la aplicación.
+
+Desde esta vista se pueden buscar usuarios y acceder a la modificación de sus datos.
+
+<img width="1229" height="712" alt="image" src="https://github.com/user-attachments/assets/353d72f0-b319-40c3-9f5f-44eaa1b74dc5" />
+
+
+### 7.14 Formulario de usuario
+
+El formulario de usuario permite consultar o modificar los datos de un usuario.
+
+Esta vista puede utilizarse para que un usuario modifique sus propios datos o para que el administrador gestione la información de otros usuarios o añadir uno nuevo.
+
+<img width="1199" height="713" alt="image" src="https://github.com/user-attachments/assets/24213f35-d04c-4772-ba0c-ae4f0b71471b" />
+
+### 7.15 Formulario de pista
+
+El formulario de pista permite al administrador crear una nueva pista o modificar una pista existente.
+
+Si se accede desde el botón de crear, el formulario aparece vacío. Si se accede desde el botón de modificar, JavaScript carga los datos de la pista seleccionada y rellena los campos automáticamente.
+
+<img width="1184" height="698" alt="image" src="https://github.com/user-attachments/assets/c817f396-f2e6-48f2-aaf8-a620e863a0b2" />
+
 
 ## 8. JavaScript e integración con el backend
 
