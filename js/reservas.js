@@ -284,17 +284,7 @@ function formatearFecha(fecha) {
     return fecha;
 }
 
-/*
-    Forzamos visualmente franjas de 1 hora.
 
-    Aunque una reserva antigua venga del backend como:
-    horaInicio: 10:00
-    horaFin: 11:30
-    duracionMinutos: 90
-
-    Aquí la mostramos como:
-    10:00 - 11:00
-*/
 function formatearHorario(horaInicio) {
     if (!horaInicio) {
         return "Sin hora";
