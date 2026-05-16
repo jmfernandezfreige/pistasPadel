@@ -608,105 +608,465 @@ De esta forma, un usuario normal solo puede acceder a sus propias funcionalidade
 
 ## 6. Backend
 
+El backend de la aplicación está desarrollado con **Java** y **Spring Boot**. Su función principal es recibir las peticiones del frontend, aplicar la lógica de negocio, comprobar la seguridad, acceder a la base de datos y devolver respuestas en formato JSON.
+
+La aplicación no genera las páginas HTML desde el backend, sino que funciona como una **API REST**. Por tanto, el frontend se comunica con el servidor mediante peticiones HTTP realizadas con JavaScript.
+
+
 ### 6.1 Estructura del backend con Spring Boot
+
+El backend está organizado por capas, separando las responsabilidades principales del proyecto. Esta estructura permite que el código sea más claro, mantenible y fácil de ampliar.
+
+```text
+backend/
+│
+├── src/
+│   ├── main/
+│   │   ├── java/
+│   │   │   └── edu.comillas.icai.gitt.pat.spring.practica_final/
+│   │   │       │
+│   │   │       ├── controlador/
+│   │   │       │   ├── PistaControlador.java
+│   │   │       │   ├── ReservasControlador.java
+│   │   │       │   └── UsuarioControlador.java
+│   │   │       │
+│   │   │       ├── entidad/
+│   │   │       │   ├── Pista.java
+│   │   │       │   ├── Reserva.java
+│   │   │       │   ├── Rol.java
+│   │   │       │   └── Usuario.java
+│   │   │       │
+│   │   │       ├── repositorio/
+│   │   │       │   ├── RepoPista.java
+│   │   │       │   ├── RepoReserva.java
+│   │   │       │   ├── RepoRol.java
+│   │   │       │   └── RepoUsuario.java
+│   │   │       │
+│   │   │       ├── servicio/
+│   │   │       │   ├── ServicioPistas.java
+│   │   │       │   ├── ServicioReservas.java
+│   │   │       │   └── ServicioUsuarios.java
+│   │   │       │
+│   │   │       ├── ConfiguracionSeguridad.java
+│   │   │       ├── ControladorGlobalDeErrores.java
+│   │   │       ├── ModeloError.java
+│   │   │       ├── PracticaFinalApplication.java
+│   │   │       └── TareasProgramadas.java
+│   │   │
+│   │   └── resources/
+│   │       ├── application.properties
+│   │       └── data.sql
+│   │
+│   └── test/
+│
+└── pom.xml
+```
+
+El flujo general del backend es el siguiente:
+
+```text
+Frontend
+   │
+   │ Petición HTTP con fetch
+   ▼
+Spring Security
+   │
+   │ Comprueba autenticación y permisos
+   ▼
+Controlador REST
+   │
+   │ Recibe la petición y llama al servicio correspondiente
+   ▼
+Servicio
+   │
+   │ Aplica la lógica de negocio
+   ▼
+Repositorio JPA
+   │
+   │ Consulta o modifica la base de datos
+   ▼
+Base de datos H2
+   │
+   │ Devuelve los datos solicitados
+   ▼
+Servicio
+   │
+   │ Procesa el resultado
+   ▼
+Controlador REST
+   │
+   │ Devuelve la respuesta JSON
+   ▼
+Frontend
+```
+
+De esta forma, cada parte del backend tiene una responsabilidad concreta:
+
+| Capa | Función |
+|---|---|
+| Controladores | Reciben las peticiones HTTP y devuelven respuestas |
+| Servicios | Contienen la lógica de negocio |
+| Repositorios | Acceden a la base de datos |
+| Entidades | Representan las tablas de la base de datos |
+| Seguridad | Controla autenticación, roles y permisos |
+| Gestión de errores | Devuelve errores claros y estructurados |
+
+
 ### 6.2 Entidades principales
+
+Las entidades representan los elementos principales de la aplicación y se corresponden con las tablas de la base de datos.
+
+| Entidad | Descripción |
+|---|---|
+| `Usuario` | Representa a los usuarios registrados en la aplicación |
+| `Rol` | Representa el tipo de usuario: `USER` o `ADMIN` |
+| `Pista` | Representa una pista de pádel del club |
+| `Reserva` | Representa una reserva realizada por un usuario sobre una pista |
+
+La entidad `Usuario` almacena los datos personales del usuario, como nombre, apellidos, email, contraseña, teléfono, estado activo y rol asociado.
+
+La entidad `Rol` permite diferenciar entre usuarios normales y administradores. Esta diferencia es importante porque no todos los usuarios tienen los mismos permisos dentro de la aplicación.
+
+La entidad `Pista` contiene la información de cada pista de pádel, como su nombre, ubicación, precio por hora, estado activo y fecha de alta.
+
+La entidad `Reserva` relaciona un usuario con una pista en una fecha y hora concreta. Además, guarda la duración, la hora de inicio, la hora de fin, el estado de la reserva y la fecha de creación.
+
+Las relaciones principales entre entidades son:
+
+| Relación | Explicación |
+|---|---|
+| Un usuario tiene un rol | Cada usuario puede ser `USER` o `ADMIN` |
+| Un usuario puede tener muchas reservas | Un mismo usuario puede reservar varias veces |
+| Una pista puede tener muchas reservas | Una pista puede reservarse en diferentes fechas y horas |
+| Una reserva pertenece a un usuario y a una pista | Cada reserva concreta une usuario, pista, fecha y hora |
+
+
 ### 6.3 Repositorios JPA
+
+Los repositorios permiten acceder a la base de datos utilizando **Spring Data JPA**. Gracias a ellos, el backend puede buscar, guardar, modificar o consultar datos sin escribir manualmente todas las sentencias SQL.
+
+| Repositorio | Entidad asociada | Función |
+|---|---|---|
+| `RepoUsuario` | `Usuario` | Gestiona las consultas y operaciones sobre usuarios |
+| `RepoRol` | `Rol` | Gestiona el acceso a los roles |
+| `RepoPista` | `Pista` | Gestiona las consultas y operaciones sobre pistas |
+| `RepoReserva` | `Reserva` | Gestiona las consultas y operaciones sobre reservas |
+
+Los repositorios son utilizados por los servicios. Por ejemplo, cuando se quiere crear una reserva, el servicio necesita consultar primero si existe la pista, buscar al usuario autenticado y comprobar si ya existe otra reserva en la misma franja horaria.
+
+El uso de repositorios permite separar la lógica de acceso a datos de la lógica de negocio.
+
+
 ### 6.4 Servicios
+
+Los servicios contienen la lógica principal de la aplicación. Son una capa intermedia entre los controladores y los repositorios.
+
+| Servicio | Función |
+|---|---|
+| `ServicioUsuarios` | Gestiona el registro, consulta y modificación de usuarios |
+| `ServicioPistas` | Gestiona las pistas y la consulta de disponibilidad |
+| `ServicioReservas` | Gestiona la creación, consulta, modificación y cancelación de reservas |
+
+Los servicios son importantes porque evitan que toda la lógica esté dentro de los controladores. En esta capa se realizan las comprobaciones necesarias antes de acceder o modificar la base de datos.
+
+Algunas de las comprobaciones que se realizan en los servicios son:
+
+- Comprobar si un usuario existe.
+- Evitar emails duplicados.
+- Obtener el usuario autenticado.
+- Comprobar si una pista existe.
+- Comprobar si una pista está activa.
+- Consultar la disponibilidad de una pista.
+- Evitar reservas solapadas.
+- Calcular la hora de fin de una reserva.
+- Asociar una reserva al usuario que ha iniciado sesión.
+- Comprobar si un usuario puede ver, modificar o cancelar una reserva.
+- Permitir ciertas operaciones solo a administradores.
+
+Por ejemplo, al crear una reserva, el flujo del servicio es:
+
+```text
+1. Recibe los datos de la reserva desde el controlador.
+2. Comprueba que la pista existe.
+3. Comprueba que no haya otra reserva solapada.
+4. Obtiene el usuario autenticado.
+5. Crea una nueva reserva asociada a ese usuario y a esa pista.
+6. Calcula la hora de fin a partir de la hora de inicio y la duración.
+7. Guarda la reserva en la base de datos.
+8. Devuelve la reserva creada.
+```
+
 ### 6.5 Controladores REST
+
+Los controladores REST son las clases que reciben las peticiones HTTP realizadas desde el frontend.
+
+| Controlador | Función |
+|---|---|
+| `UsuarioControlador` | Gestiona usuarios, registro y consulta del usuario autenticado |
+| `PistaControlador` | Gestiona pistas y disponibilidad |
+| `ReservasControlador` | Gestiona reservas de usuario y reservas de administrador |
+
+Los controladores definen los endpoints mediante anotaciones de Spring como:
+
+| Anotación | Uso |
+|---|---|
+| `@GetMapping` | Obtener información |
+| `@PostMapping` | Crear un nuevo recurso |
+| `@PatchMapping` | Modificar parcialmente un recurso |
+| `@DeleteMapping` | Eliminar, cancelar o desactivar un recurso |
+
+El controlador no debe contener toda la lógica del proyecto. Su función principal es recibir la petición, recoger los parámetros necesarios, llamar al servicio correspondiente y devolver la respuesta.
+
+
 ### 6.6 Seguridad y autenticación
+
+La seguridad del backend se gestiona mediante **Spring Security**.
+
+La aplicación diferencia entre dos roles principales:
+
+| Rol | Permisos principales |
+|---|---|
+| `USER` | Crear reservas, consultar sus reservas y modificar sus propios datos |
+| `ADMIN` | Gestionar usuarios, pistas y reservas globales |
+
+La autenticación utilizada en la integración con el frontend es **Basic Auth**. Cuando el usuario inicia sesión desde el frontend, JavaScript genera un token a partir del email y la contraseña. Ese token se guarda en `localStorage` y se envía en las peticiones protegidas mediante la cabecera `Authorization`.
+
+El flujo de seguridad es el siguiente:
+
+```text
+1. El usuario introduce email y contraseña en el frontend.
+2. JavaScript genera el token Basic Auth.
+3. El token se envía al backend.
+4. Spring Security comprueba las credenciales.
+5. Si son correctas, permite acceder al recurso.
+6. Si no son correctas, devuelve un error 401.
+7. Si el usuario está autenticado pero no tiene permisos suficientes, devuelve un error 403.
+```
+
+Además de comprobar si el usuario está autenticado, el backend también comprueba los permisos según el rol.
+
+Por ejemplo:
+
+| Acción | Permiso necesario |
+|---|---|
+| Registrarse | Público |
+| Iniciar sesión | Público |
+| Consultar pistas | Público |
+| Crear reserva | Usuario autenticado |
+| Consultar reservas propias | Usuario autenticado |
+| Modificar una reserva propia | Usuario propietario o administrador |
+| Crear pista | Administrador |
+| Modificar pista | Administrador |
+| Desactivar pista | Administrador |
+| Consultar todos los usuarios | Administrador |
+| Consultar todas las reservas | Administrador |
+
+De esta forma, la aplicación controla la seguridad tanto por autenticación como por autorización.
+
+
 ### 6.7 Base de datos H2
+
+La aplicación utiliza una base de datos **H2**, una base de datos ligera que permite ejecutar el proyecto de forma sencilla en local sin instalar un gestor externo.
+
+La configuración de la base de datos se encuentra en:
+
+```text
+src/main/resources/application.properties
+```
+
+Los datos iniciales de prueba se cargan desde:
+
+```text
+src/main/resources/data.sql
+```
+
+En este archivo se insertan inicialmente:
+
+- Roles `USER` y `ADMIN`.
+- Usuarios de prueba.
+- Pistas iniciales.
+- Reservas iniciales.
+
+Además, se puede consultar la base de datos desde la consola H2 accediendo en el navegador a:
+
+```text
+http://localhost:8080/h2-console
+```
+
+Esta consola permite ver las tablas generadas, consultar los datos almacenados y comprobar si las operaciones realizadas desde el frontend se están guardando correctamente.
+
+El uso de H2 ha sido útil para la práctica porque permite probar rápidamente el backend y reiniciar la base de datos con datos iniciales controlados.
+
+
 ### 6.8 Gestión de errores
 
+El backend incluye una gestión centralizada de errores mediante la clase `ControladorGlobalDeErrores`.
+
+Esta clase permite capturar distintos tipos de errores y devolver respuestas más claras al frontend. En lugar de recibir errores difíciles de interpretar, el frontend puede recibir una respuesta estructurada con información sobre lo que ha ocurrido.
+
+El modelo utilizado para devolver errores es `ModeloError`, que permite incluir información como:
+
+| Campo | Descripción |
+|---|---|
+| Código de error | Código HTTP asociado al error |
+| Mensaje | Explicación del problema |
+| Ruta | Endpoint donde se ha producido el error |
+| Fecha | Momento en el que ocurrió el error |
+| Errores de campo | Lista de errores concretos en formularios o validaciones |
+
+Algunos errores que puede devolver el backend son:
+
+| Código | Error | Ejemplo |
+|---|---|---|
+| `400` | Bad Request | Datos mal enviados o formato incorrecto |
+| `401` | Unauthorized | Usuario no autenticado |
+| `403` | Forbidden | Usuario sin permisos suficientes |
+| `404` | Not Found | Usuario, pista o reserva no encontrada |
+| `409` | Conflict | Reserva solapada o acción no permitida |
+| `500` | Internal Server Error | Error interno no previsto |
+
+Por ejemplo, si un usuario intenta crear una reserva en una franja horaria ya ocupada, el backend devuelve un error de conflicto. Si un usuario normal intenta acceder a una función reservada al administrador, el backend devuelve un error de permisos.
+
+Esta gestión de errores ayuda a que la aplicación sea más robusta y permite que el frontend pueda mostrar mensajes adecuados al usuario.
+
+### 6.9 API REST
+
+El backend expone una API REST que permite al frontend comunicarse con el servidor mediante peticiones HTTP.  
+Estos endpoints son utilizados desde JavaScript mediante `fetch` para registrar usuarios, iniciar sesión, consultar pistas, comprobar disponibilidad y gestionar reservas.
+
+Los endpoints se organizan según la funcionalidad que realizan.
+
+#### 6.9.1 Endpoints de autenticación
+
+| Método | Endpoint | Descripción | Acceso |
+|---|---|---|---|
+| `POST` | `/pistaPadel/auth/register` | Registra un nuevo usuario | Público |
+| `POST` | `/pistaPadel/auth/login` | Inicia sesión | Público |
+| `POST` | `/pistaPadel/auth/logout` | Cierra sesión | Usuario autenticado |
+| `GET` | `/pistaPadel/auth/me` | Devuelve el usuario autenticado | Usuario autenticado |
+
+#### 6.9.2 Endpoints de usuarios
+
+| Método | Endpoint | Descripción | Acceso |
+|---|---|---|---|
+| `GET` | `/pistaPadel/users` | Lista los usuarios del sistema | ADMIN |
+| `GET` | `/pistaPadel/users/{userId}` | Obtiene los datos de un usuario concreto | ADMIN o usuario propietario |
+| `PATCH` | `/pistaPadel/users/{userId}` | Modifica los datos de un usuario | ADMIN o usuario propietario |
+
+#### 6.9.3 Endpoints de pistas
+
+| Método | Endpoint | Descripción | Acceso |
+|---|---|---|---|
+| `GET` | `/pistaPadel/courts` | Lista las pistas disponibles | Público |
+| `GET` | `/pistaPadel/courts/{courtId}` | Obtiene el detalle de una pista concreta | Público |
+| `POST` | `/pistaPadel/courts` | Crea una nueva pista | ADMIN |
+| `PATCH` | `/pistaPadel/courts/{courtId}` | Modifica una pista existente | ADMIN |
+| `DELETE` | `/pistaPadel/courts/{courtId}` | Desactiva o elimina una pista | ADMIN |
+
+#### 6.9.4 Endpoints de disponibilidad
+
+| Método | Endpoint | Descripción | Acceso |
+|---|---|---|---|
+| `GET` | `/pistaPadel/availability` | Consulta disponibilidad general por fecha y pista | Usuario autenticado |
+| `GET` | `/pistaPadel/courts/{courtId}/availability` | Consulta la disponibilidad de una pista concreta | Usuario autenticado |
+
+#### 6.9.5 Endpoints de reservas
+
+| Método | Endpoint | Descripción | Acceso |
+|---|---|---|---|
+| `POST` | `/pistaPadel/reservations` | Crea una nueva reserva | Usuario autenticado |
+| `GET` | `/pistaPadel/reservations` | Lista las reservas del usuario autenticado | Usuario autenticado |
+| `GET` | `/pistaPadel/reservations/{reservationId}` | Obtiene el detalle de una reserva concreta | ADMIN o usuario propietario |
+| `PATCH` | `/pistaPadel/reservations/{reservationId}` | Modifica una reserva existente | ADMIN o usuario propietario |
+| `DELETE` | `/pistaPadel/reservations/{reservationId}` | Cancela una reserva | ADMIN o usuario propietario |
+
+#### 6.9.6 Endpoints de administración
+
+| Método | Endpoint | Descripción | Acceso |
+|---|---|---|---|
+| `GET` | `/pistaPadel/admin/reservations` | Lista todas las reservas del sistema | ADMIN |
+
+Los endpoints públicos permiten registrar usuarios, iniciar sesión y consultar pistas. El resto de operaciones requieren autenticación, y algunas están restringidas únicamente al usuario con rol `ADMIN`.
+
 ---
 
-## 8. API REST
+## 7. Frontend y capturas de la interfaz
 
-### 8.1 Endpoints de autenticación
-### 8.2 Endpoints de usuarios
-### 8.3 Endpoints de pistas
-### 8.4 Endpoints de disponibilidad
-### 8.5 Endpoints de reservas
-### 8.6 Endpoints de administración
-
----
-
-## 9. Frontend y capturas de la interfaz
-
-### 9.1 Diseño general del frontend
-### 9.2 Página principal
+### 7.1 Diseño general del frontend
+### 7.2 Página principal
 
 <!-- Captura de la página principal -->
 <!-- ![Página principal](img/capturas/index.png) -->
 
-### 9.3 Registro de usuario
+### 7.3 Registro de usuario
 
 <!-- Captura del registro -->
 <!-- ![Registro](img/capturas/registro.png) -->
 
-### 9.4 Inicio de sesión
+### 7.4 Inicio de sesión
 
 <!-- Captura del login -->
 <!-- ![Login](img/capturas/login.png) -->
 
-### 9.5 Listado de pistas
+### 7.5 Listado de pistas
 
 <!-- Captura del listado de pistas -->
 <!-- ![Listado de pistas](img/capturas/pistas.png) -->
 
-### 9.6 Detalle de pista
+### 7.6 Detalle de pista
 
 <!-- Captura del detalle de pista -->
 <!-- ![Detalle de pista](img/capturas/pista_detalle.png) -->
 
-### 9.7 Nueva reserva
+### 7.7 Nueva reserva
 
 <!-- Captura de nueva reserva -->
 <!-- ![Nueva reserva](img/capturas/reserva_nueva.png) -->
 
-### 9.8 Mis reservas
+### 7.8 Mis reservas
 
 <!-- Captura de reservas del usuario -->
 <!-- ![Mis reservas](img/capturas/reservas.png) -->
 
-### 9.9 Panel de administración de pistas
+### 7.9 Panel de administración de pistas
 
 <!-- Captura de administración de pistas -->
 <!-- ![Administración de pistas](img/capturas/admin_pistas.png) -->
 
-### 9.10 Panel de administración de usuarios
+### 7.10 Panel de administración de usuarios
 
 <!-- Captura de administración de usuarios -->
 <!-- ![Administración de usuarios](img/capturas/admin_usuarios.png) -->
 
-### 9.11 Panel de administración de reservas
+### 7.11 Panel de administración de reservas
 
 <!-- Captura de administración de reservas -->
 <!-- ![Administración de reservas](img/capturas/admin_reservas.png) -->
 
 ---
 
-## 10. JavaScript e integración con el backend
+## 8. JavaScript e integración con el backend
 
-### 10.1 Registro de usuarios
-### 10.2 Inicio de sesión
-### 10.3 Gestión de sesión y roles
-### 10.4 Carga dinámica de pistas
-### 10.5 Creación de reservas
-### 10.6 Funcionalidades de administrador
-### 10.7 Uso de fetch y Basic Auth
+### 8.1 Registro de usuarios
+### 8.2 Inicio de sesión
+### 8.3 Gestión de sesión y roles
+### 8.4 Carga dinámica de pistas
+### 8.5 Creación de reservas
+### 8.6 Funcionalidades de administrador
+### 8.7 Uso de fetch y Basic Auth
 
 ---
 
-## 11. Funcionalidades implementadas
+## 9. Funcionalidades implementadas
 
-### 11.1 Registro e inicio de sesión
-### 11.2 Consulta de pistas
-### 11.3 Consulta de disponibilidad
-### 11.4 Creación de reservas
-### 11.5 Consulta de reservas propias
-### 11.6 Gestión de pistas
-### 11.7 Gestión de usuarios
-### 11.8 Gestión global de reservas
+### 9.1 Registro e inicio de sesión
+### 9.2 Consulta de pistas
+### 9.3 Consulta de disponibilidad
+### 9.4 Creación de reservas
+### 9.5 Consulta de reservas propias
+### 9.6 Gestión de pistas
+### 9.7 Gestión de usuarios
+### 9.8 Gestión global de reservas
 
 ---
 
