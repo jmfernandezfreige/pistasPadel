@@ -3,7 +3,51 @@
 </p>
 <h1 align="center">PistasPadel — Arena Padel Club</h1>
 
+
+> [!NOTE]
+> **BASE DE DATOS INICIALIZADA**
+>
+> Al ejecutar el backend, la aplicación carga automáticamente una base de datos inicial con roles, usuarios, pistas y reservas de prueba.  
+> Estos datos permiten probar rápidamente las funcionalidades principales de la aplicación sin tener que crearlos manualmente.
+
+## Datos iniciales de prueba
+
+### Roles iniciales
+
+| ID | Rol | Descripción |
+|---|---|---|
+| 1 | `USER` | Usuario estándar del sistema |
+| 2 | `ADMIN` | Administrador con control total |
+
+### Usuarios iniciales
+
+| ID | Rol | Nombre | Email | Contraseña | Teléfono | Estado |
+|---|---|---|---|---|---|---|
+| 1 | `ADMIN` | Pepe Fernández Freige | `pepe@gmail.com` | `1234` | `600111222` | Activo |
+| 2 | `USER` | Isabel Alonso Casas | `isabel@gmail.com` | `1234` | `600333444` | Activo |
+
+### Pistas iniciales
+
+| ID | Nombre | Ubicación | Precio/hora | Estado |
+|---|---|---|---|---|
+| 1 | Pista Central | Pabellón Norte - Interior | 15.50 € | Activa |
+| 2 | Pista 2 | Complejo Sur - Exterior | 10.00 € | Activa |
+| 3 | Pista 3 | Complejo Sur - Exterior | 10.00 € | Inactiva |
+
+### Reservas iniciales
+
+| ID | Usuario | Pista | Fecha | Hora inicio | Hora fin | Duración | Estado |
+|---|---|---|---|---|---|---|---|
+| 1 | Isabel Alonso Casas | Pista Central | 2026-03-20 | 10:00 | 11:30 | 90 min | Activa |
+| 2 | Isabel Alonso Casas | Pista 2 | 2026-03-22 | 18:00 | 19:00 | 60 min | Cancelada |
+
+> [!IMPORTANT]
+> Estos datos son únicamente datos de prueba para la práctica. Las contraseñas se han definido de forma sencilla para facilitar la ejecución local del proyecto y no deberían almacenarse así en un entorno real.
+
+---
+
 ## 1. Descripción general del proyecto
+
 
 ### 1.1 Objetivo de la práctica
 
