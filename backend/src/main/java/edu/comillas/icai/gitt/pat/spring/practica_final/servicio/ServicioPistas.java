@@ -18,6 +18,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 @Service
 public class ServicioPistas {
@@ -26,23 +28,38 @@ public class ServicioPistas {
     @Autowired
     RepoReserva repoReserva;
 
+    private static final Logger log = LoggerFactory.getLogger(ServicioPistas.class);
+
 
     public Pista idPistaExiste(Long idPista) {
+
+        log.info("Buscando pista con id {}", idPista);
+
         Pista pista = repoPista.findById(idPista).orElse(null);
 
         if (pista == null) {
+
+            log.warn("No se encontró la pista con id {}", idPista);
+
             throw new ResponseStatusException(
                     HttpStatus.NOT_FOUND,
                     "Pista no encontrada"
             );
         }
+
+        log.info("Pista encontrada: {}", pista.getNombre());
+
         return pista;
     }
 
     public ResponseEntity<Pista> crearPista(Pista pista) {
         Pista pistaExistente = repoPista.findByNombre(pista.getNombre());
 
+        log.info("Intentando crear pista con nombre {}", pista.getNombre());
+
         if (pistaExistente != null) {
+            log.warn("Ya existe una pista con nombre {}", pista.getNombre());
+
             throw new ResponseStatusException(
                     HttpStatus.CONFLICT,
                     "El nombre de la pista ya existe"
@@ -50,13 +67,22 @@ public class ServicioPistas {
         }
 
         repoPista.save(pista);
+
+        log.info("Pista creada correctamente con id {}", pista.getIdPista());
+
         return ResponseEntity.status(HttpStatus.CREATED).body(pista);
     }
 
     public List<Pista> listarPistas(Boolean active) {
+        log.info("Listando pistas. Filtro active = {}", active);
+
         if (active == null) {
+            log.info("Se devuelven todas las pistas");
+
             return (List<Pista>) repoPista.findAll();
         }
+        log.info("Se devuelven únicamente pistas activas = {}", active);
+
         return repoPista.findByActiva(active);
     }
 
@@ -67,13 +93,21 @@ public class ServicioPistas {
     }
 
     public ResponseEntity<Pista> actualizarPista(Long idPista, Pista pistaActualizada) {
+        log.info("Actualizando pista con id {}", idPista);
 
         Pista pista = idPistaExiste(idPista);
 
         if (!pista.getNombre().equalsIgnoreCase(pistaActualizada.getNombre())) {
             // Si ha cambiado, verificamos que no esté cogido por OTRA pista distinta
 
+            log.info("Se intenta cambiar el nombre de la pista de {} a {}",
+                    pista.getNombre(),
+                    pistaActualizada.getNombre());
+
             if (repoPista.existsByNombreIgnoreCaseAndIdPistaNot(pistaActualizada.getNombre(), idPista)) {
+                log.warn("El nombre {} ya está siendo utilizado por otra pista",
+                        pistaActualizada.getNombre());
+
                 throw new ResponseStatusException(
                         HttpStatus.CONFLICT,
                         "El nombre nuevo de la pista ya está siendo utilizado"
@@ -88,40 +122,58 @@ public class ServicioPistas {
 
         repoPista.save(pista);
 
+        log.info("Pista {} actualizada correctamente", idPista);
+
         return ResponseEntity.ok(pista);
     }
 
     public ResponseEntity<Void> eliminarPista(Long idPista) {
+        log.info("Intentando eliminar pista con id {}", idPista);
+
         Pista pista = idPistaExiste(idPista);
 
         boolean tieneReservasFuturas = repoReserva.existsByPista_IdPistaAndFechaReservaAfter(idPista, LocalDate.now().minusDays(1));
         if (tieneReservasFuturas) {
+            log.warn("No se puede eliminar la pista {} porque tiene reservas futuras",
+                    idPista);
+
             throw new ResponseStatusException(HttpStatus.CONFLICT, "No se puede eliminar una pista con reservas futuras activas");
         }
 
         repoPista.delete(pista);
+
+        log.info("Pista {} eliminada correctamente", idPista);
 
         return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }
 
     public ResponseEntity<Void> desactivarPista(Long idPista) {
 
+        log.info("Desactivando pista con id {}", idPista);
+
         Pista pista = idPistaExiste(idPista);
 
         pista.setActiva(false);
 
         repoPista.save(pista);
+        log.info("Pista {} desactivada correctamente", idPista);
 
         return ResponseEntity.noContent().build();
     }
 
     public List<Map<String, Object>> consultarDisponibilidad(String date, Long idPista) {
 
+        log.info("Consultando disponibilidad para fecha {} y pista {}",
+                date,
+                idPista);
+
         LocalDate fechaConsulta;
 
         try {
             fechaConsulta = LocalDate.parse(date.trim());
         } catch (DateTimeParseException e) {
+            log.error("Formato de fecha inválido: {}", date);
+
             throw new ResponseStatusException(
                     HttpStatus.BAD_REQUEST,
                     "Formato de fecha inválido, debe ser YYYY-MM-DD"
@@ -130,11 +182,17 @@ public class ServicioPistas {
 
         List<Pista> pistas = new ArrayList<>();
 
+
         if (idPista != null) {
+            log.info("Consulta de disponibilidad para pista específica {}",
+                    idPista);
+
             Pista p = repoPista.findById(idPista).orElseThrow(() ->
                     new ResponseStatusException(HttpStatus.NOT_FOUND, "Pista no encontrada"));
             pistas.add(p);
         } else {
+            log.info("Consulta de disponibilidad para todas las pistas");
+
             repoPista.findAll().forEach(pistas::add);
         }
 
@@ -180,6 +238,10 @@ public class ServicioPistas {
     }
 
     private List<String> obtenerDisponibilidadPista(Long courtId, LocalDate fechaConsulta) {
+        log.info("Obteniendo disponibilidad de pista {} para fecha {}",
+                courtId,
+                fechaConsulta);
+
         List<Reserva> reservasPista = repoReserva.findByPista_IdPistaAndFechaReserva(courtId, fechaConsulta);
         List<String> disponibilidad = new ArrayList<>();
 
