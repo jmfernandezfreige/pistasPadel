@@ -542,23 +542,80 @@ El uso de una única hoja de estilos principal permite reutilizar clases CSS en 
 
 ## 5. Arquitectura de la aplicación
 
+La aplicación sigue una arquitectura separada entre **frontend** y **backend**. El frontend se encarga de mostrar la interfaz al usuario y recoger sus acciones, mientras que el backend gestiona la lógica de negocio, la seguridad, la base de datos y las respuestas a las peticiones.
+
+Esta separación permite que cada parte tenga una responsabilidad clara y que la comunicación entre ambas se realice mediante una API REST.
+
 ### 5.1 Separación entre backend y frontend
+
+El proyecto está dividido en dos partes principales:
+
+| Parte | Función |
+|---|---|
+| Backend | Gestiona usuarios, pistas, reservas, seguridad, validaciones y base de datos |
+| Frontend | Muestra la interfaz, recoge datos de formularios y realiza peticiones al backend |
+
+El backend no genera directamente las páginas HTML, sino que devuelve datos en formato JSON. El frontend recibe esos datos y los muestra dinámicamente en la interfaz mediante JavaScript.
+
 ### 5.2 Comunicación mediante API REST
+
+La comunicación entre frontend y backend se realiza mediante peticiones HTTP a los endpoints definidos en el backend.
+
+Desde JavaScript se utiliza `fetch` para realizar operaciones como:
+
+- Registrar usuarios.
+- Iniciar sesión.
+- Consultar pistas.
+- Consultar disponibilidad.
+- Crear reservas.
+- Modificar usuarios, pistas o reservas.
+- Eliminar o desactivar elementos desde el perfil administrador.
+
+Las respuestas del backend se reciben normalmente en formato JSON y se utilizan para actualizar el contenido de las páginas HTML.
+
+
 ### 5.3 Flujo general de funcionamiento
+
+El funcionamiento general de la aplicación es el siguiente:
+
+1. El usuario accede al frontend desde el navegador.
+2. El frontend muestra la interfaz inicial.
+3. Si el usuario realiza una acción, JavaScript envía una petición al backend.
+4. El backend procesa la petición, aplica la lógica correspondiente y consulta la base de datos si es necesario.
+5. El backend devuelve una respuesta.
+6. El frontend interpreta esa respuesta y actualiza la página.
+
+Por ejemplo, al crear una reserva, el usuario selecciona pista, fecha y hora en el frontend. Después, JavaScript envía esos datos al backend, que comprueba si la pista existe, si el horario está disponible y si el usuario tiene permisos para realizar la reserva.
+
+
 ### 5.4 Diferencias entre usuario y administrador
+
+La aplicación diferencia entre usuarios normales y administradores mediante roles.
+
+| Rol | Funcionalidades principales |
+|---|---|
+| `USER` | Consultar pistas, crear reservas, ver sus reservas y modificar sus datos |
+| `ADMIN` | Gestionar usuarios, pistas y reservas globales del sistema |
+
+Esta diferencia se aplica en dos niveles:
+
+- En el **backend**, mediante seguridad y control de permisos.
+- En el **frontend**, mostrando botones, menús y páginas diferentes según el rol del usuario autenticado.
+
+De esta forma, un usuario normal solo puede acceder a sus propias funcionalidades, mientras que el administrador dispone de opciones adicionales de gestión.
 
 ---
 
-## 7. Backend
+## 6. Backend
 
-### 7.1 Estructura del backend con Spring Boot
-### 7.2 Entidades principales
-### 7.3 Repositorios JPA
-### 7.4 Servicios
-### 7.5 Controladores REST
-### 7.6 Seguridad y autenticación
-### 7.7 Base de datos H2
-### 7.8 Gestión de errores
+### 6.1 Estructura del backend con Spring Boot
+### 6.2 Entidades principales
+### 6.3 Repositorios JPA
+### 6.4 Servicios
+### 6.5 Controladores REST
+### 6.6 Seguridad y autenticación
+### 6.7 Base de datos H2
+### 6.8 Gestión de errores
 
 ---
 
