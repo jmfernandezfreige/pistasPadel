@@ -2233,6 +2233,7 @@ La IA se ha utilizado principalmente para:
 - Ayudar a estructurar el README y la documentación del proyecto.
 - Explicar mensajes de error y posibles soluciones.
 - Proponer mejoras en la integración entre frontend y backend.
+- Creación de imágenes realistas
 
 En todo momento, las soluciones propuestas fueron revisadas, adaptadas y probadas por el equipo antes de incorporarlas al proyecto. Por tanto, la IA se utilizó como herramienta de apoyo y aprendizaje, no como sustituto del desarrollo ni de la comprensión del código.
 
