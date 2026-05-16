@@ -11,6 +11,7 @@
   Bibiana Dorado Mateos · Pepe Fernández Freige · Guillermo Fuentes González · Isabel Alonso Casas
 </p>
 
+---
 
 ## Presentación del proyecto
 
