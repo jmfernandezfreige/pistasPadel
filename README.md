@@ -1693,33 +1693,185 @@ Entre las funcionalidades más importantes del proyecto destacan:
 
 ---
 
-## 12. Instalación y ejecución
+## 10. Instalación y ejecución
 
-### 12.1 Requisitos previos
-### 12.2 Clonar el repositorio
-### 12.3 Ejecutar el backend
-### 12.4 Acceder a H2
-### 12.5 Abrir el frontend
-### 12.6 Usuarios de prueba
+En este apartado se explica cómo descargar, ejecutar y probar el proyecto en local. Para que la aplicación funcione correctamente, primero debe iniciarse el backend y después abrirse el frontend en el navegador.
+
+### 10.1 Requisitos previos
+
+Antes de ejecutar el proyecto, es necesario tener instaladas las siguientes herramientas:
+
+| Herramienta | Uso |
+|---|---|
+| Java | Necesario para ejecutar el backend con Spring Boot |
+| IntelliJ IDEA | Recomendado para abrir y ejecutar el backend |
+| Visual Studio Code | Recomendado para abrir y probar el frontend |
+| Git | Necesario para clonar el repositorio |
+| Navegador web | Para acceder a la aplicación y a la consola H2 |
+
+Además, es recomendable tener instalado **Postman** para probar los endpoints del backend de forma independiente.
+
+### 10.2 Clonar el repositorio
+
+Para descargar el proyecto en local, se debe clonar el repositorio desde GitHub:
+
+```bash
+git clone https://github.com/jmfernandezfreige/pistasPadel.git
+```
+
+Después, se accede a la carpeta del proyecto:
+
+```bash
+cd pistasPadel
+```
+
+La estructura principal del proyecto contiene el backend, los archivos HTML, la carpeta `js`, la carpeta `img`, la hoja de estilos y el README.
+
+### 10.3 Ejecutar el backend
+
+El backend se encuentra dentro de la carpeta:
+
+```text
+backend/
+```
+
+También se puede ejecutar desde **IntelliJ IDEA** abriendo la carpeta `backend` y lanzando la clase principal:
+
+```text
+PracticaFinalApplication.java
+```
+
+Cuando el backend se inicia correctamente, queda disponible en:
+
+```text
+http://localhost:8080
+```
+
+Los endpoints de la aplicación utilizan la ruta base:
+
+```text
+http://localhost:8080/pistaPadel
+```
+
+Por ejemplo:
+
+```text
+http://localhost:8080/pistaPadel/courts
+```
+
+### 10.4 Acceder a H2
+
+La aplicación utiliza una base de datos **H2** para guardar usuarios, roles, pistas y reservas.
+
+La consola de H2 se puede abrir desde el navegador en:
+
+```text
+http://localhost:8080/h2-console
+```
+
+Los datos de conexión son:
+
+| Campo | Valor |
+|---|---|
+| JDBC URL | `jdbc:h2:file:./dbdata` |
+| User Name | `sa` |
+| Password | vacío |
+
+Desde esta consola se pueden consultar las tablas de la aplicación y comprobar que los datos iniciales se han cargado correctamente.
+
+Las tablas principales son:
+
+| Tabla | Contenido |
+|---|---|
+| `ROL` | Roles `USER` y `ADMIN` |
+| `USUARIO` | Usuarios registrados |
+| `PISTA` | Pistas de pádel |
+| `RESERVA` | Reservas realizadas |
+
+### 10.5 Abrir el frontend
+
+El frontend está formado por los archivos HTML, CSS y JavaScript situados en la raíz del repositorio.
+
+La página principal es:
+
+```text
+index.html
+```
+
+Para abrir el frontend, se puede hacer doble clic sobre `index.html` o abrir el proyecto con **Visual Studio Code** y usar una extensión como **Live Server**.
+
+Es importante que el backend esté ejecutándose antes de probar las funcionalidades dinámicas, ya que las páginas utilizan JavaScript para hacer peticiones a:
+
+```text
+http://localhost:8080/pistaPadel
+```
+
+El flujo recomendado para probar la aplicación es:
+
+```text
+1. Ejecutar el backend.
+2. Comprobar que carga la base de datos.
+3. Abrir index.html en el navegador.
+4. Iniciar sesión con un usuario de prueba.
+5. Probar las funcionalidades según el rol.
+```
+
+### 10.6 Usuarios de prueba
+
+La base de datos se inicializa automáticamente con usuarios de prueba para facilitar la corrección y el uso de la aplicación.
+
+| Rol | Nombre | Email | Contraseña | Funcionalidades principales |
+|---|---|---|---|---|
+| `ADMIN` | Pepe Fernández Freige | `pepe@gmail.com` | `1234` | Gestión de usuarios, pistas y reservas |
+| `USER` | Isabel Alonso Casas | `isabel@gmail.com` | `1234` | Consulta de pistas y gestión de sus reservas |
+
+El usuario administrador permite probar las funcionalidades de gestión del sistema, mientras que el usuario estándar permite probar el flujo normal de reserva de pistas.
+
+> [!IMPORTANT]
+> Estos usuarios son datos de prueba para la práctica. Las contraseñas se han configurado de forma sencilla para facilitar la ejecución local y no deberían utilizarse así en un entorno real.
 
 ---
 
-## 13. Pruebas realizadas
+## 11. Pruebas realizadas
 
-### 13.1 Pruebas del backend
-### 13.2 Pruebas de endpoints REST
-### 13.3 Pruebas del frontend
-### 13.4 Pruebas de integración
+Las pruebas del proyecto se realizaron de forma progresiva en cada entrega, adaptándose al estado de desarrollo de la aplicación en cada momento. Al principio, las comprobaciones se centraron en el backend y en los endpoints REST; después, se añadieron pruebas propias del backend; más adelante se comprobó la parte visual del frontend; y finalmente se realizaron pruebas completas con el backend y el frontend integrados.
+
+| Entrega | Parte probada | Forma de prueba | Objetivo |
+|---|---|---|---|
+| Entrega 1 | Backend inicial | Postman y navegador | Comprobar que los primeros endpoints respondían correctamente |
+| Entrega 2 | Backend con persistencia y seguridad | Tests del propio backend y pruebas manuales | Verificar la lógica de negocio, la base de datos, la seguridad y las validaciones |
+| Entrega 3 | Frontend HTML y CSS | Previsualización en Visual Studio Code y navegador | Revisar que las páginas se vieran correctamente y que la navegación visual tuviera sentido |
+| Entrega 4 | JavaScript e integración | Backend ejecutándose y pruebas dinámicas desde el frontend | Comprobar que la aplicación completa funcionaba conectando frontend, backend y base de datos |
+
+En la **primera entrega**, al estar centrada principalmente en la creación del backend inicial, las pruebas se realizaron sobre todo con **Postman**. Esta herramienta permitió enviar peticiones a los endpoints REST y comprobar si el backend devolvía las respuestas esperadas. También se probaron algunos endpoints directamente desde el navegador, especialmente aquellos de tipo `GET`, como el listado de pistas o la consulta de información.
+
+En esta fase se comprobaba principalmente que las rutas existieran, que los métodos HTTP fueran correctos y que las respuestas tuvieran sentido. Por ejemplo, se revisó el registro de usuarios, la consulta de pistas, la creación de reservas y las restricciones básicas de acceso.
+
+En la **segunda entrega**, el backend ya incorporaba persistencia, entidades JPA, repositorios, servicios, seguridad y validaciones. Por ello, además de seguir haciendo algunas pruebas manuales, se utilizaron también **tests dentro del propio backend**. Estos tests permitieron comprobar de forma más estructurada que la lógica principal funcionaba correctamente.
+
+En esta fase se revisaron aspectos como la creación de usuarios, la consulta de datos desde la base de datos, la relación entre usuarios, pistas y reservas, la seguridad por roles y la gestión de errores. También se comprobó que los datos iniciales definidos en `data.sql` se cargaban correctamente al arrancar la aplicación.
+
+En la **tercera entrega**, el trabajo se centró en el frontend desarrollado con **HTML y CSS**. Como todavía no estaba completamente integrado con JavaScript y backend, las pruebas fueron principalmente visuales.
+
+La comprobación se realizó previsualizando las páginas desde **Visual Studio Code** o abriéndolas directamente en el navegador. En esta fase se revisó que las páginas cargaran correctamente, que los formularios estuvieran bien estructurados, que los botones y enlaces tuvieran sentido y que la estética fuera coherente en toda la aplicación.
+
+También se revisaron las distintas vistas creadas para usuarios y administradores, como la página principal, login, registro, listado de pistas, detalle de pista, reservas y páginas de administración.
+
+En la **cuarta entrega**, una vez incorporado JavaScript, las pruebas pasaron a ser pruebas dinámicas de integración. Para realizarlas era necesario tener el **backend ejecutándose** y abrir el frontend en el navegador.
+
+En esta fase se comprobó que las páginas ya no fueran solo estáticas, sino que pudieran comunicarse con el backend mediante `fetch`. Se probaron acciones reales como registrarse, iniciar sesión, cargar pistas desde la base de datos, consultar disponibilidad, crear reservas, modificar datos y acceder a funcionalidades de administrador.
+
+Estas pruebas finales permitieron comprobar el funcionamiento completo de la aplicación, verificando que el frontend, el JavaScript, el backend, la seguridad y la base de datos trabajaban correctamente de forma conjunta.
 
 ---
 
-## 14. Problemas encontrados y soluciones
+## 12. Problemas encontrados y soluciones
 
-### 14.1 Seguridad y autenticación
-### 14.2 CORS e integración con JavaScript
-### 14.3 Persistencia y carga de datos
-### 14.4 Organización de páginas HTML
-### 14.5 Control de versiones con GitHub
+### 12.1 Seguridad y autenticación
+### 12.2 CORS e integración con JavaScript
+### 12.3 Persistencia y carga de datos
+### 12.4 Organización de páginas HTML
+### 12.5 Control de versiones con GitHub
 
 ---
 
