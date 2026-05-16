@@ -1627,14 +1627,69 @@ Gracias a esta integración, el frontend puede trabajar con datos reales del bac
 
 ## 9. Funcionalidades implementadas
 
-### 9.1 Registro e inicio de sesión
-### 9.2 Consulta de pistas
-### 9.3 Consulta de disponibilidad
-### 9.4 Creación de reservas
-### 9.5 Consulta de reservas propias
-### 9.6 Gestión de pistas
-### 9.7 Gestión de usuarios
-### 9.8 Gestión global de reservas
+Para evitar repetir la explicación técnica del backend y de JavaScript, en este apartado se resumen las funcionalidades finales de la aplicación desde el punto de vista del usuario.  
+Las funcionalidades se dividen según el tipo de acceso: usuario sin iniciar sesión, usuario registrado con rol `USER` y usuario administrador con rol `ADMIN`.
+
+### 9.1 Funcionalidades según el tipo de usuario
+
+| Tipo de usuario | Funcionalidad | Descripción |
+|---|---|---|
+| Usuario sin iniciar sesión | Acceder a la página principal | Puede visualizar la página de inicio del club y la información general de la aplicación |
+| Usuario sin iniciar sesión | Registrarse | Puede crear una nueva cuenta desde el formulario de registro |
+| Usuario sin iniciar sesión | Iniciar sesión | Puede acceder a la aplicación introduciendo email y contraseña |
+| Usuario sin iniciar sesión | Consultar listado de pistas | Puede ver las pistas disponibles del club |
+| Usuario sin iniciar sesión | Acceder a reserva | Si intenta reservar, la aplicación lo redirige al inicio de sesión |
+| `USER` | Cerrar sesión | Puede cerrar su sesión desde el menú de usuario |
+| `USER` | Consultar sus datos | Puede acceder a su información personal |
+| `USER` | Modificar sus datos | Puede actualizar sus datos personales |
+| `USER` | Consultar pistas | Puede ver el listado de pistas del club |
+| `USER` | Consultar detalle de pista | Puede ver información concreta de una pista |
+| `USER` | Consultar disponibilidad | Puede consultar los horarios disponibles de una pista en una fecha concreta |
+| `USER` | Crear reserva | Puede seleccionar pista, fecha y hora para realizar una nueva reserva |
+| `USER` | Consultar sus reservas | Puede ver únicamente las reservas asociadas a su usuario |
+| `USER` | Consultar detalle de reserva | Puede acceder a la información detallada de una reserva propia |
+| `USER` | Modificar reserva | Puede modificar una reserva propia si cumple las condiciones establecidas |
+| `USER` | Cancelar reserva | Puede cancelar una reserva propia si está permitido |
+| `ADMIN` | Cerrar sesión | Puede cerrar su sesión desde el menú de administrador |
+| `ADMIN` | Consultar usuarios | Puede ver el listado de usuarios registrados |
+| `ADMIN` | Buscar usuarios | Puede filtrar usuarios desde el panel de administración |
+| `ADMIN` | Modificar usuarios | Puede editar los datos de un usuario |
+| `ADMIN` | Dar de baja usuarios | Puede marcar usuarios como inactivos mediante baja lógica |
+| `ADMIN` | Consultar pistas | Puede ver todas las pistas del sistema |
+| `ADMIN` | Crear pistas | Puede añadir nuevas pistas al sistema |
+| `ADMIN` | Modificar pistas | Puede editar los datos de una pista existente |
+| `ADMIN` | Desactivar pistas | Puede eliminar o desactivar pistas del sistema |
+| `ADMIN` | Consultar reservas globales | Puede ver todas las reservas realizadas en la aplicación |
+| `ADMIN` | Buscar reservas | Puede filtrar visualmente las reservas cargadas |
+| `ADMIN` | Consultar detalle de reserva | Puede acceder al detalle de una reserva concreta |
+| `ADMIN` | Modificar reservas | Puede modificar reservas desde la vista de administración |
+| `ADMIN` | Cancelar reservas | Puede cancelar reservas del sistema |
+
+### 9.2 Resumen por módulos de la aplicación
+
+| Módulo | Funcionalidades incluidas |
+|---|---|
+| Autenticación | Registro, inicio de sesión, cierre de sesión y consulta del usuario autenticado |
+| Usuarios | Consulta de datos, modificación de usuario, listado de usuarios y baja lógica |
+| Pistas | Listado de pistas, detalle de pista, creación, modificación y desactivación |
+| Disponibilidad | Consulta de horarios disponibles por pista y fecha |
+| Reservas | Creación, consulta, detalle, modificación y cancelación de reservas |
+| Administración | Gestión global de usuarios, pistas y reservas |
+| Interfaz dinámica | Menús y botones adaptados según el rol del usuario |
+| Seguridad | Restricción de acciones según autenticación y rol |
+
+### 9.3 Funcionalidades destacadas
+
+Entre las funcionalidades más importantes del proyecto destacan:
+
+- La diferenciación entre usuario no autenticado, usuario `USER` y usuario `ADMIN`.
+- La carga dinámica de información desde el backend mediante JavaScript.
+- La creación de reservas comprobando disponibilidad real.
+- La protección de las operaciones mediante autenticación y roles.
+- La gestión de usuarios, pistas y reservas desde el perfil administrador.
+- La reutilización de páginas HTML adaptando el contenido según el rol del usuario.
+- La persistencia de datos en base de datos H2.
+- La carga inicial de datos de prueba para facilitar la corrección y uso de la aplicación.
 
 ---
 
