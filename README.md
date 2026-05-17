@@ -1,7 +1,7 @@
 <p align="center">
   <img width="200" height="200" alt="logo_arena_padel_club" src="https://github.com/user-attachments/assets/4d5c741c-2ba4-4f87-af4f-055c1a53c81f" />
 </p>
-<h1 align="center">PistasPadel — Arena Padel Club</h1>
+<h1 align="center">Pistas Padel — Arena Padel Club</h1>
 
 <p align="center">
   <strong>Programación de Aplicaciones Telemáticas</strong>
