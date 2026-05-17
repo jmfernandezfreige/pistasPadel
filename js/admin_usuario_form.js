@@ -7,18 +7,42 @@ let usuarioOriginal = null;
 
 document.addEventListener("DOMContentLoaded", async () => {
     const token = localStorage.getItem("token");
+    const rolUsuarioLogueado = localStorage.getItem("rol"); // Obtenemos quién está mirando la pantalla
     const formulario = document.querySelector(".formulario-admin-pista");
 
     const parametrosURL = new URLSearchParams(window.location.search);
     const idUsuario = parametrosURL.get("id");
 
+    // Si es USER y no hay ID, lo echamos
+    if (rolUsuarioLogueado === "USER" && !idUsuario) {
+        alert("No tienes permisos para crear usuarios nuevos.");
+        window.location.href = "index.html";
+        return;
+    }
+
     const inputContrasena = document.getElementById("contrasena");
     const inputConfirmar = document.getElementById("confirmarContrasena");
+    const inputRol = document.getElementById("rol");
+    const inputEstado = document.getElementById("estado");
+
+    // Se ocultamos Rol y Estado si es un usuario normal
+    if (rolUsuarioLogueado === "USER") {
+        inputRol.closest(".grupo-formulario").style.display = "none";
+        inputEstado.closest(".grupo-formulario").style.display = "none";
+    }
 
     // MODO EDICIÓN
     if (idUsuario) {
-        document.querySelector("h1").textContent = "Modificar usuario";
-        document.querySelector(".descripcion-admin-pista").textContent = "Actualiza los datos del usuario seleccionado.";
+        
+        // Texto según rol
+        if (rolUsuarioLogueado === "USER") {
+            document.querySelector("h1").textContent = "Mis datos personales";
+            document.querySelector(".descripcion-admin-pista").textContent = "Actualiza tu información personal y de contacto.";
+        } else {
+            document.querySelector("h1").textContent = "Modificar usuario";
+            document.querySelector(".descripcion-admin-pista").textContent = "Actualiza los datos del usuario seleccionado.";
+        }
+        
         document.querySelector(".boton-formulario").textContent = "Guardar cambios";
 
         inputContrasena.removeAttribute("required");
@@ -37,18 +61,15 @@ document.addEventListener("DOMContentLoaded", async () => {
                 const usuario = await respuesta.json();
                 usuarioOriginal = usuario;
 
-                console.log("Usuario cargado:", usuarioOriginal);
-
                 document.getElementById("nombre").value = usuario.nombre;
                 document.getElementById("apellidos").value = usuario.apellidos;
                 document.getElementById("email").value = usuario.email;
                 document.getElementById("telefono").value = usuario.telefono;
 
                 if (usuario.rol) {
-                    document.getElementById("rol").value = usuario.rol.nombreRol;
+                    inputRol.value = usuario.rol.nombreRol;
                 }
-
-                document.getElementById("estado").value = usuario.activo.toString();
+                inputEstado.value = usuario.activo.toString();
 
             } else {
                 alert("Error al cargar los datos del usuario.");
@@ -69,10 +90,18 @@ document.addEventListener("DOMContentLoaded", async () => {
         const contrasena = inputContrasena.value;
         const confirmarContrasena = inputConfirmar.value;
         const telefono = document.getElementById("telefono").value.trim();
-        const rolSeleccionado = document.getElementById("rol").value;
-        const activo = document.getElementById("estado").value === "true";
+        
+        let rolSeleccionado = inputRol.value;
+        let activo = inputEstado.value === "true";
 
-        if (!nombre || !apellidos || !email || !telefono || !rolSeleccionado) {
+        // Si es un usuario normal, forzamos que se envíe 
+        // lo que ya tenía originalmente (por si modifica el HTML para hacerse admin)
+        if (rolUsuarioLogueado === "USER" && usuarioOriginal) {
+            rolSeleccionado = usuarioOriginal.rol.nombreRol;
+            activo = usuarioOriginal.activo;
+        }
+
+        if (!nombre || !apellidos || !email || !telefono) {
             alert("Por favor, completa todos los campos obligatorios.");
             return;
         }
@@ -98,22 +127,14 @@ document.addEventListener("DOMContentLoaded", async () => {
             }
         };
 
-        // Si estamos creando usuario, mandamos la contraseña escrita
         if (!idUsuario) {
             usuarioData.password = contrasena;
         }
 
-        // Si estamos modificando usuario
         if (idUsuario) {
-            // Si se escribe una contraseña nueva, usamos esa
-            // Si no, mantenemos la contraseña original
             usuarioData.password = contrasena ? contrasena : usuarioOriginal.password;
-
-            // El backend necesita fechaRegistro porque en actualizaUsuario() la vuelve a guardar
             usuarioData.fechaRegistro = usuarioOriginal.fechaRegistro;
         }
-
-        console.log("Datos enviados al backend:", usuarioData);
 
         const url = idUsuario ? `${API_USUARIOS}/${idUsuario}` : `${API_AUTH}/register`;
         const metodo = idUsuario ? "PATCH" : "POST";
@@ -130,18 +151,21 @@ document.addEventListener("DOMContentLoaded", async () => {
             });
 
             if (!respuesta.ok) {
-                const errorTexto = await respuesta.text();
-                console.error("Error del backend:", respuesta.status, errorTexto);
                 throw new Error("Error al procesar la petición con el servidor");
             }
 
-            alert(idUsuario ? "Usuario modificado correctamente" : "Usuario creado correctamente");
-            formulario.reset();
-            window.location.href = "admin_usuarios.html";
+            alert(idUsuario ? "Datos modificados correctamente" : "Usuario creado correctamente");
+            
+            // Si es admin va al listado, si es usuario va al inicio
+            if (rolUsuarioLogueado === "USER") {
+                window.location.href = "index.html"; 
+            } else {
+                window.location.href = "admin_usuarios.html";
+            }
 
         } catch (error) {
             console.error("Error al guardar usuario:", error);
-            alert("No se pudo guardar el usuario. Revisa la consola para más detalles.");
+            alert("No se pudo guardar la información.");
         }
     });
 });
