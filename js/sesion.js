@@ -72,7 +72,7 @@ function pintarMenuUsuario(contenedor, usuario) {
             <div class="desplegable-usuario">
                 <a href="admin_usuario_form.html?id=${usuario.idUsuario}">Mis datos</a>
                 <a href="reservas.html">Mis reservas</a>
-                <a href="usuario_reserva_nueva.html">Nueva reserva</a>
+                <a href="reserva_nueva.html">Nueva reserva</a>
                 <a href="#" class="cerrar-sesion">Cerrar Sesión</a>
             </div>
         </div>
@@ -91,7 +91,7 @@ function pintarMenuAdmin(contenedor, usuario) {
             <div class="desplegable-usuario">
                 <a href="admin_usuario_form.html?id=${usuario.idUsuario}">Mis datos</a>
                 <a href="admin_usuarios.html">Gestionar Usuarios</a>
-                <a href="admin_pistas.html">Gestionar Pistas</a>
+                <a href="pistas.html">Gestionar Pistas</a>
                 <a href="reservas.html">Gestionar Reservas</a>
                 <a href="#" class="cerrar-sesion">Cerrar Sesión</a>
             </div>
