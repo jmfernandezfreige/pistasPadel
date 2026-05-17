@@ -38,6 +38,10 @@ document.addEventListener("DOMContentLoaded", async () => {
         if (rolUsuarioLogueado === "USER") {
             document.querySelector("h1").textContent = "Mis datos personales";
             document.querySelector(".descripcion-admin-pista").textContent = "Actualiza tu información personal y de contacto.";
+            const botonCancelar = document.querySelector(".acciones-secundarias-formulario a");
+            if (botonCancelar) {
+                botonCancelar.href = "index.html"; 
+            }
         } else {
             document.querySelector("h1").textContent = "Modificar usuario";
             document.querySelector(".descripcion-admin-pista").textContent = "Actualiza los datos del usuario seleccionado.";
