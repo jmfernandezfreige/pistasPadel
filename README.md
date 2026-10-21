@@ -11,6 +11,12 @@
   Bibiana Dorado Mateos · Pepe Fernández Freige · Guillermo Fuentes González · Isabel Alonso Casas
 </p>
 
+<p align="center">
+  <a href="https://jmfernandezfreige.github.io/pistasPadel/">
+    <strong> Acceder a Arena Padel Club</strong>
+  </a>
+</p>
+
 ---
 
 ## Presentación del proyecto
